@@ -1,9 +1,6 @@
-function Home() {
-  return (
-    <div>
-      Home Page
-    </div>
-  )
-}
+import React from 'react';
 
-export default Home
+const Home = () => {
+  return <h1>Welcome to NestFindr</h1>;
+};
+export default Home;
