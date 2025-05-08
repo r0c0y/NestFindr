@@ -12,7 +12,7 @@ import Login from './auth/Login';
 import Signup from './auth/Signup';
 
 
-import Navbar from './components/Navbar';
+import Navbar from './pages/Navbar';
 
 const App1 = () => (
   <BrowserRouter>
