@@ -12,9 +12,9 @@ import Login from './auth/Login';
 import Signup from './auth/Signup';
 
 
-import Navbar from './pages/Navbar';
+import Navbar from './components/Navbar';
 
-const App = () => (
+const App1 = () => (
   <BrowserRouter>
     <Navbar />
     <Routes>
@@ -25,8 +25,9 @@ const App = () => (
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/calculator" element={<Calculator />} />
     </Routes>
   </BrowserRouter>
 );
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')).render(<App1 />);
