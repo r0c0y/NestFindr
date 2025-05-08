@@ -1,5 +1,5 @@
 
-const listingsData = Array.from({ length: 70 },() => ({
+const listingsData = Array.from({ length: 70 }, (_, i) => ({
   title: `PRoperty  ${i + 1}`,
   location: `City ${i + 1}`,
   price: `₹${(50 + i) * 1000}`,
