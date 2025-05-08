@@ -1,20 +1,27 @@
 NestFindr
+NestFindr is a simple and clean real estate website built for a mid-term evaluation. It allows users to browse property listings and calculate mortgage payments through an easy-to-use interface.
 
-Description
+🔑 Key Features
+Home Page
+A welcoming introduction with a call-to-action button to explore listings.
 
-NestFindr is a simple real estate website built for a mid-term evaluation. It helps users explore properties and calculate mortgage payments with a user-friendly interface.
+Property Listings
+Properties are displayed in a paginated grid layout for smooth browsing.
 
-Key Features
+Mortgage Calculator
+Helps users estimate monthly payments with a detailed breakdown:
 
-Home Page: A welcoming page with a button to explore listings.
+Principal & Interest
 
-Property Listings: Displays properties in a grid with pagination.
+Property Tax
 
-Mortgage Calculator: Calculates monthly payments and shows a breakdown (Principal & Interest, Property Tax, Home Insurance).
+Home Insurance
 
-Technologies Used
+🛠️ Technologies Used
+React – For building the UI
 
-React (for building the UI)
-Vite (for development and build)
-React Router (for navigation)
-CSS (for styling)
+Vite – For fast development and build setup
+
+React Router – For page navigation
+
+CSS – For styling and layout
