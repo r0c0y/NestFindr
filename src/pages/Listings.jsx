@@ -46,7 +46,9 @@ const Listings = () => {
             {p}
           </button>
         ))}
-        <button onClick={handleNext} disabled={currentPage === totalPages}>Next</button>
+        <button onClick={handleNext} disabled={currentPage === totalPages}>
+        Next
+        </button>
       </div>
     </div>
   );

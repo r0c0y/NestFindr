@@ -25,7 +25,7 @@ const App1 = () => (
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/calculator" element={<Calculator />} />
+   
     </Routes>
   </BrowserRouter>
 );
