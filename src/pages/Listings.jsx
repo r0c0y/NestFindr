@@ -13,7 +13,7 @@ const dummyProperties = Array.from({ length: 180 }, (_, i) => ({
 
 const Listings = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const propertiesPerPage = 8; // Increased from 6 to 8
+  const propertiesPerPage = 8;
   const totalPages = Math.ceil(dummyProperties.length / propertiesPerPage);
   const startIndex = (currentPage - 1) * propertiesPerPage;
   const currentProperties = dummyProperties.slice(startIndex, startIndex + propertiesPerPage);
@@ -30,17 +30,13 @@ const Listings = () => {
 
     if (endPage - startPage < maxPagesToShow - 1) {
       startPage = Math.max(1, endPage - maxPagesToShow + 1);
-    }
-
-    if (startPage > 1) {
+    }if (startPage > 1) {
       pages.push('...');
     }
 
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-
-    if (endPage < totalPages) {
+      for (let i = startPage; i <= endPage; i++) {
+          pages.push(i);
+      }if (endPage < totalPages) {
       pages.push('...');
     }
 
@@ -56,12 +52,7 @@ const Listings = () => {
         ))}
       </div>
       <div className="pagination">
-        <button
-          className="pagination-button nav-button"
-          onClick={handlePrev}
-          disabled={currentPage === 1}
-          aria-label="Previous page"
-        >
+        <button className="pagination-button nav-button" onClick={handlePrev} disabled={currentPage === 1} aria-label="Previous page">
           Prev
         </button>
         {getPaginationItems().map((page, index) =>
