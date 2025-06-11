@@ -18,9 +18,22 @@ const Listings = () => {
   const startIndex = (currentPage - 1) * propertiesPerPage;
   const currentProperties = dummyProperties.slice(startIndex, startIndex + propertiesPerPage);
 
-  const handlePageClick = (pageNum) => setCurrentPage(pageNum);
-  const handleNext = () => currentPage < totalPages && setCurrentPage((prev) => prev + 1);
-  const handlePrev = () => currentPage > 1 && setCurrentPage((prev) => prev - 1);
+  const handlePageClick = (pageNum) => {
+    setCurrentPage(pageNum);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const getPaginationItems = () => {
     const maxPagesToShow = 5;
@@ -30,16 +43,18 @@ const Listings = () => {
 
     if (endPage - startPage < maxPagesToShow - 1) {
       startPage = Math.max(1, endPage - maxPagesToShow + 1);
-    }if (startPage > 1) {
-      pages.push('...');
     }
-
-      for (let i = startPage; i <= endPage; i++) {
-          pages.push(i);
-      }if (endPage < totalPages) {
-      pages.push('...');
+    if (startPage > 1) {
+      pages.push(1);
+      if (startPage > 2) pages.push('...');
     }
-
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) pages.push('...');
+      pages.push(totalPages);
+    }
     return pages;
   };
 
@@ -47,23 +62,34 @@ const Listings = () => {
     <div className="listings-container">
       <h1 className="listings-title">Property Listings</h1>
       <div className="properties-grid">
-        {currentProperties.map((prop, index) => (
-          <PropertyCard key={prop.id} {...prop} index={index} />
-        ))}
+        {currentProperties.length === 0 ? (
+          <div className="no-properties">No properties found.</div>
+        ) : (
+          currentProperties.map((prop, index) => (
+            <PropertyCard key={prop.id} {...prop} index={index} />
+          ))
+        )}
       </div>
-      <div className="pagination">
-        <button className="pagination-button nav-button" onClick={handlePrev} disabled={currentPage === 1} aria-label="Previous page">
+      <div className="pagination" role="navigation" aria-label="Pagination Navigation">
+        <button
+          className="pagination-button nav-button"
+          onClick={handlePrev}
+          disabled={currentPage === 1}
+          aria-label="Previous page"
+        >
           Prev
         </button>
         {getPaginationItems().map((page, index) =>
           page === '...' ? (
-            <span key={`ellipsis-${index}`} className="pagination-ellipsis">
+            <span key={`ellipsis-${index}`} className="pagination-ellipsis" aria-hidden="true">
               ...
             </span>
           ) : (
             <button
               key={page}
-              className={`pagination-button page-number ${currentPage === page ? 'active' : ''}`}
+              className={`pagination-button page-number${
+                currentPage === page ? ' active' : ''
+              }`}
               onClick={() => handlePageClick(page)}
               aria-current={currentPage === page ? 'page' : undefined}
             >

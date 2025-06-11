@@ -1,117 +1,129 @@
 .calculator-container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  background: #f8f9fa;
-  min-height: 100vh;
+  max-width: 480px;
+  margin: 32px auto;
+  padding: 48px 24px 32px 24px;
+  background: linear-gradient(135deg, #f8fafc 60%, #e3f0ff 100%);
+  min-height: 90vh;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(33, 150, 243, 0.08), 0 1.5px 8px rgba(0,0,0,0.04);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .calculator-title {
-  font-size: 36px;
-  font-weight: 700;
-  color: #1a1a1a;
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #1a237e;
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 40px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 8px rgba(33, 72, 243, 0.08);
 }
 
 .calculator-form {
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 32px;
+  background: #ffffffcc;
+  padding: 32px 20px 28px 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(33, 150, 243, 0.07);
+  margin-bottom: 36px;
+  border: 1px solid #e3e8f0;
 }
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 22px;
 }
 
 .form-group label {
   display: flex;
   align-items: center;
-  font-size: 16px;
-  font-weight: 500;
-  color: #1a1a1a;
-  gap: 12px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #263238;
+  gap: 10px;
+  margin-bottom: 6px;
 }
 
 .form-group input,
 .form-group select {
   flex: 1;
-  padding: 8px 12px;
-  font-size: 15px;
+  padding: 10px 14px;
+  font-size: 1rem;
   color: #374151;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  transition: border-color 0.2s ease;
+  background: #f3f6fa;
+  border: 1.5px solid #dbeafe;
+  border-radius: 7px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-top: 2px;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #2196F3;
-  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.13);
 }
 
 .calculate-button {
   width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #ffffff;
-  background: #2196F3;
+  padding: 14px;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(90deg, #1976d2 60%, #49a391 100%);
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.10);
+  letter-spacing: 0.5px;
 }
 
 .calculate-button:hover {
-  background: #49a391;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+  background: linear-gradient(90deg, #49a391 60%, #1976d2 100%);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.18);
 }
 
 .calculate-button:active {
-  transform: translateY(0);
-  box-shadow: 0 1px 4px rgba(11, 11, 11, 0.1);
+  transform: translateY(0) scale(0.99);
+  box-shadow: 0 1px 4px rgba(33, 150, 243, 0.08);
 }
 
 .result {
-  background: #f5a351;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(90deg, #f5a351 80%, #ffe0b2 100%);
+  padding: 26px 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(245, 163, 81, 0.10);
   text-align: center;
+  margin-top: 12px;
 }
 
 .result-title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
   color: #2148f3;
-  margin: 0;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.5px;
 }
 .breakdown {
-  margin-top: 16px;
+  margin-top: 18px;
 }
 
 .breakdown h4 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 1.18rem;
+  font-weight: 800;
   color: #484848;
   margin-bottom: 12px;
   text-align: center;
+  letter-spacing: 0.2px;
 }
 
 .breakdown-item {
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
+  padding: 7px 0;
   border-bottom: 1px solid #e6cfcf;
+  font-size: 1rem;
 }
 
 .breakdown-item:last-child {
@@ -120,9 +132,11 @@
 
 .breakdown-item span:first-child {
   font-weight: 600;
+  color: #263238;
 }
 
 .breakdown-item span:last-child {
-  font-weight: 500;
+  font-weight: 600;
   color: #9511e2;
+  letter-spacing: 0.2px;
 }
