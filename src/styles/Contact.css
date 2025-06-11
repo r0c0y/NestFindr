@@ -1,0 +1,103 @@
+.contact-container {
+  max-width: 480px;
+  margin: 48px auto;
+  background: #fff8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(255, 111, 0, 0.10);
+  padding: 40px 28px 32px 28px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.contact-title {
+  color: #ff6f00;
+  text-align: center;
+  margin-bottom: 18px;
+  font-weight: 800;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.contact-info {
+  margin-bottom: 28px;
+  text-align: center;
+  color: #7a5c2e;
+  font-size: 1.08rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-info a {
+  color: #2196F3;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contact-input,
+.contact-textarea {
+  padding: 12px 14px;
+  border-radius: 7px;
+  border: 1.5px solid #e5e7eb;
+  font-size: 1rem;
+  background: #f9fafb;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.contact-input:focus,
+.contact-textarea:focus {
+  outline: none;
+  border-color: #ff6f00;
+  box-shadow: 0 0 0 2px rgba(255, 111, 0, 0.10);
+}
+
+.contact-textarea {
+  resize: vertical;
+  min-height: 90px;
+  max-height: 220px;
+}
+
+.contact-button {
+  background: linear-gradient(90deg, #ff6f00 70%, #ffb300 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.08rem;
+  border: none;
+  border-radius: 7px;
+  padding: 13px 0;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+  box-shadow: 0 2px 8px rgba(255, 111, 0, 0.10);
+  letter-spacing: 0.5px;
+}
+
+.contact-button:hover {
+  background: linear-gradient(90deg, #ffb300 60%, #ff6f00 100%);
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 4px 16px rgba(255, 111, 0, 0.13);
+}
+
+.contact-success {
+  color: #2196F3;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.08rem;
+  letter-spacing: 0.2px;
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

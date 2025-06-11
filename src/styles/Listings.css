@@ -1,93 +1,148 @@
+html, body, #root {
+  background: linear-gradient(135deg, #fff4e6 60%, #ffd8b2 100%);
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 .listings-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 40px 20px;
-  background: rgb(255, 243, 224);
+  background: transparent;
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-top: 80px; /* Add space for fixed navbar */
 }
 
 .listings-title {
-  font-size: 36px;
-  font-weight: 700;
-  color: #ff6f00;
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #ff7300;
   text-align: center;
   margin-bottom: 48px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 8px rgba(255, 115, 0, 0.10);
 }
 
 .properties-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 32px;
   margin-bottom: 48px;
 }
 
+.no-properties {
+  color: #ff7300;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 32px 0;
+  font-weight: 600;
+}
+
+/* =========================================== */
+/* === UPDATED PAGINATION STYLES START HERE === */
+/* =========================================== */
+
 .pagination {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  padding: 20px 0;
-  max-width: 530px; 
-  margin: 0 auto; 
-  background: rgb(202, 202, 202);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  gap: 8px; 
+  padding: 12px; 
+  margin: 48px auto 0; 
+  background-color: #ffffff; 
+  border-radius: 50px; 
+  box-shadow: 0 4px 20px rgba(255, 115, 0, 0.15); 
+  width: fit-content; 
 }
+
 
 .pagination-button {
-  font-size: 14px;
-  font-weight: 500;
+  font-family: 'Inter', sans-serif; 
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease-out; 
 }
 
+
 .nav-button {
-  padding: 8px 12px;
-  background: #e5e7eb;
-  color: #374151;
-  border-radius: 6px;
+  padding: 10px 16px;
+  background-color: #FFF4E6; 
+  color: #FF7300; 
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase; 
+  letter-spacing: 0.5px;
 }
 
 .nav-button:hover:not(:disabled) {
-  background: #d1d5db;
+  background-color: #FF7300; 
+  color: #FFFFFF; 
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .nav-button:disabled {
-  background: #f3f4f6;
-  color: #9ca3af;
+  background-color: #F8F8F8; 
+  color: #BDBDBD; 
   cursor: not-allowed;
+  transform: none; 
+  box-shadow: none;
 }
 
 .page-number {
-  width: 36px;
-  height: 36px;
-  background: #e5e7eb;
-  color: #374151;
-  border-radius: 6px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: transparent; 
+  color: #1976D2;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .page-number:hover:not(.active) {
-  background: #d1d5db;
+  background-color: #E3F0FF;
+  color: #1976D2; 
 }
 
 .page-number.active {
-  background: #2196F3;
-  color: #ffffff;
+  background-color: #1976D2; 
+  color: #FFFFFF; 
+  transform: scale(1.1); 
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3); 
 }
 
 .pagination-ellipsis {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #374151;
-  font-size: 14px;
+  color: #757575;
+  font-size: 16px;
+}
+
+/* ========================================= */
+/* === UPDATED PAGINATION STYLES END HERE === */
+/* ========================================= */
+
+
+.property-card {
+  background: #f5c5c5;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(255, 115, 0, 0.09);
+  transition: box-shadow 0.18s, transform 0.18s;
+}
+
+.property-card:hover {
+  box-shadow: 0 8px 32px rgba(255, 115, 0, 0.16);
+  transform: translateY(-2px) scale(1.01);
 }
