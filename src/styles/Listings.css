@@ -131,6 +131,23 @@ html, body, #root {
   justify-content: center;
   color: #757575;
   font-size: 16px;
+
+}
+
+.nav-button {
+  min-width: 64px; 
+  text-align: center;
+}
+
+.page-number,
+.pagination-ellipsis {
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ========================================= */
