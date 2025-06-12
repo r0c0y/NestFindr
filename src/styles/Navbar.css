@@ -85,7 +85,7 @@
   display: flex;
   align-items: center;
   margin-left: 8px;
-  text-decoration: none;
+  position: relative;
 }
 
 .avatar-circle {
@@ -101,12 +101,28 @@
   font-size: 1.1rem;
   border: 2px solid #ff7300;
   transition: box-shadow 0.18s;
+  overflow: hidden;
 }
 
-.navbar-avatar:hover .avatar-circle {
-  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.13);
-  background: #fff;
-  color: #1976d2;
+.dashboard-hover {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff8f0;
+  color: #ff7300;
+  font-size: 0.95rem;
+  padding: 4px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(255, 115, 0, 0.13);
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.navbar-avatar:hover .dashboard-hover,
+.navbar-avatar:focus .dashboard-hover {
+  display: block;
 }
 
 @media (max-width: 700px) {

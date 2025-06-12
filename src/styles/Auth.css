@@ -41,6 +41,13 @@
   box-shadow: 0 0 0 2px rgba(255, 115, 0, 0.10);
 }
 
+.auth-form input.filled,
+.auth-select.filled {
+  background: #fff;
+  border-color: #ffb300;
+  transition: background 0.2s, border-color 0.2s;
+}
+
 .auth-btn {
   background: linear-gradient(90deg, #ff7300 70%, #ffb300 100%);
   color: #fff;
