@@ -86,14 +86,14 @@ const Calculator = () => {
       <h1 className="calculator-title">Mortgage Calculator</h1>
       <div className="calculator-form">
         <div className="form-group">
-          <label>Home Price (₹) 
+          <label>Home Price (₹)
             <input
-              type="number"
-              min="0"
               value={homePrice}
-              onChange={(e) => updateHomePrice(e.target.value)}
-              placeholder="e.g. 5000000"
+              onChange={e => updateHomePrice(e.target.value)}
             />
+            <span style={{ marginLeft: 12 }}>
+              {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(homePrice)}
+            </span>
           </label>
         </div>
         <div className="form-group">

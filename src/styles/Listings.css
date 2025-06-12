@@ -1,5 +1,8 @@
 html, body, #root {
-  background: linear-gradient(135deg, #fff4e6 60%, #ffd8b2 100%);
+  background-image: radial-gradient(ellipse at top left, rgba(255, 115, 0, 0.12) 0%, transparent 40%),
+                    radial-gradient(ellipse at bottom right, rgba(25, 118, 210, 0.08) 0%, transparent 50%);
+  /* background-color: #F8F9FA; */
+  background-repeat: no-repeat;
   min-height: 100vh;
   width: 100%;
   margin: 0;

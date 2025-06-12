@@ -1,62 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropertyCard from '../components/PropertyCard';
+import Pagination from '../components/Pagination';
 import '../styles/Listings.css';
 
+// Large dummy array for many pages
 const dummyProperties = Array.from({ length: 180 }, (_, i) => ({
   id: i + 1,
   image: `https://via.placeholder.com/300x200?text=Property+${i + 1}`,
   title: `Property ${i + 1}`,
   address: `Sector ${i + 1}, City`,
-  price: `${50 + i} Lakh`,
+  price: 5000000 + i * 100000,
   date: `2025-05-${(i % 30) + 1 < 10 ? '0' : ''}${(i % 30) + 1}`,
 }));
 
 const Listings = () => {
+  // Use dummy data by default
+  const [properties, setProperties] = useState(dummyProperties);
+  const [loading, setLoading] = useState(false); // Not loading by default for dummy data
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 8;
-  const totalPages = Math.ceil(dummyProperties.length / propertiesPerPage);
+
+  // --- API logic: Uncomment this block when your API is ready ---
+  /*
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/properties');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setProperties(data);
+        } else {
+          setProperties(dummyProperties); // fallback to dummy if API returns empty
+        }
+      } catch (err) {
+        console.error('Fetch error:', err);
+        setProperties(dummyProperties); // fallback to dummy on error
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+  */
+  // --- End API logic ---
+
+  const totalPages = Math.ceil(properties.length / propertiesPerPage);
   const startIndex = (currentPage - 1) * propertiesPerPage;
-  const currentProperties = dummyProperties.slice(startIndex, startIndex + propertiesPerPage);
-
-  const handlePageClick = (pageNum) => {
-    setCurrentPage(pageNum);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const getPaginationItems = () => {
-    const maxPagesToShow = 5;
-    const pages = [];
-    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
-    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-    if (endPage - startPage < maxPagesToShow - 1) {
-      startPage = Math.max(1, endPage - maxPagesToShow + 1);
-    }
-    if (startPage > 1) {
-      pages.push(1);
-      if (startPage > 2) pages.push('...');
-    }
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) pages.push('...');
-      pages.push(totalPages);
-    }
-    return pages;
-  };
+  const currentProperties = properties.slice(startIndex, startIndex + propertiesPerPage);
 
   return (
     <div className="listings-container">
@@ -70,42 +61,11 @@ const Listings = () => {
           ))
         )}
       </div>
-      <div className="pagination" role="navigation" aria-label="Pagination Navigation">
-        <button
-          className="pagination-button nav-button"
-          onClick={handlePrev}
-          disabled={currentPage === 1}
-          aria-label="Previous page"
-        >
-          Prev
-        </button>
-        {getPaginationItems().map((page, index) =>
-          page === '...' ? (
-            <span key={`ellipsis-${index}`} className="pagination-ellipsis" aria-hidden="true">
-              ...
-            </span>
-          ) : (
-            <button
-              key={page}
-              className={`pagination-button page-number${
-                currentPage === page ? ' active' : ''
-              }`}
-              onClick={() => handlePageClick(page)}
-              aria-current={currentPage === page ? 'page' : undefined}
-            >
-              {page}
-            </button>
-          )
-        )}
-        <button
-          className="pagination-button nav-button"
-          onClick={handleNext}
-          disabled={currentPage === totalPages}
-          aria-label="Next page"
-        >
-          Next
-        </button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 };
