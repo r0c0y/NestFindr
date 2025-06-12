@@ -1,49 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { auth } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { signOut } from 'firebase/auth';
+import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const [user] = useAuthState(auth);
-  // Placeholder for editable info and bookmarks
+  const [user, loading, error] = useAuthState(auth);
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState(user?.displayName || '');
+  const [name, setName] = useState('');
   const [dob, setDob] = useState('');
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    if (user && !init) {
+      setName(user.displayName || user.email || '');
+      setInit(true);
+    }
+  }, [user, init]);
+
   const age = dob ? Math.floor((Date.now() - new Date(dob)) / (365.25 * 24 * 60 * 60 * 1000)) : '';
 
-  if (!user) return <div style={{ padding: 40 }}>Please log in to view your dashboard.</div>;
+  if (loading) return <div className="dashboard-loading">Loading...</div>;
+  if (error) return <div className="dashboard-error">Error: {error.message}</div>;
+  if (!user) return <div className="dashboard-not-logged">Please log in to view your dashboard.</div>;
+
+  const displayName = name || user.displayName || user.email || "User";
 
   return (
-    <div style={{ maxWidth: 500, margin: '40px auto', background: '#fff8f0', borderRadius: 14, boxShadow: '0 4px 24px rgba(255,115,0,0.10)', padding: 32 }}>
-      <h2 style={{ color: '#ff7300', textAlign: 'center', marginBottom: 24 }}>Dashboard</h2>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 18, marginBottom: 24 }}>
-        <span className="avatar-circle" style={{ width: 60, height: 60, fontSize: 24 }}>
+    <div className="dashboard-container">
+      <h2 className="dashboard-title">Dashboard</h2>
+      <div className="dashboard-profile">
+        <span className="dashboard-avatar">
           {user.photoURL
-            ? <img src={user.photoURL} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
-            : (user.displayName || user.email)[0].toUpperCase()}
+            ? <img src={user.photoURL} alt="avatar" />
+            : (displayName)[0].toUpperCase()}
         </span>
-        <div>
+        <div className="dashboard-info">
           {editing ? (
-            <>
-              <input value={name} onChange={e => setName(e.target.value)} style={{ fontSize: 18, padding: 4, borderRadius: 6, border: '1px solid #ccc' }} />
-              <input type="date" value={dob} onChange={e => setDob(e.target.value)} style={{ marginLeft: 8, padding: 4, borderRadius: 6, border: '1px solid #ccc' }} />
-              <button onClick={() => setEditing(false)} style={{ marginLeft: 8 }}>Save</button>
-            </>
+            <div className="dashboard-edit-fields">
+              <input
+                value={name}
+                onChange={e => setName(e.target.value)}
+                className="dashboard-input"
+                placeholder="Name"
+              />
+              <input
+                type="date"
+                value={dob}
+                onChange={e => setDob(e.target.value)}
+                className="dashboard-input"
+                placeholder="DOB"
+              />
+              <button className="dashboard-btn" onClick={() => setEditing(false)}>Save</button>
+            </div>
           ) : (
-            <>
-              <div style={{ fontWeight: 700, fontSize: 18 }}>{name || user.displayName || user.email}</div>
-              {dob && <div style={{ fontSize: 15, color: '#555' }}>DOB: {dob} (Age: {age})</div>}
-              <button onClick={() => setEditing(true)} style={{ marginTop: 4 }}>Edit</button>
-            </>
+            <div>
+              <div className="dashboard-name">{displayName}</div>
+              {dob && <div className="dashboard-dob">DOB: {dob} (Age: {age})</div>}
+              <button className="dashboard-btn" onClick={() => setEditing(true)}>Edit</button>
+            </div>
           )}
         </div>
       </div>
-      <div style={{ margin: '24px 0', borderTop: '1px solid #eee', paddingTop: 16 }}>
-        <h3 style={{ color: '#1976d2', marginBottom: 10 }}>My Bookmarked Properties</h3>
+      <div className="dashboard-section">
+        <h3>My Bookmarked Properties</h3>
         {/* TODO: List bookmarked properties here */}
-        <div style={{ color: '#888' }}>No bookmarks yet.</div>
+        <div className="dashboard-empty">No bookmarks yet.</div>
       </div>
-      <button onClick={() => signOut(auth)} style={{ background: '#ff7300', color: '#fff', border: 'none', borderRadius: 6, padding: '10px 24px', fontWeight: 700, cursor: 'pointer' }}>
+      <button className="dashboard-logout-btn" onClick={() => signOut(auth)}>
         Logout
       </button>
     </div>

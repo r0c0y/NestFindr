@@ -125,6 +125,17 @@
   display: block;
 }
 
+.navbar-logo-wrapper:hover .home-hover,
+.navbar-logo-wrapper:focus .home-hover {
+  display: block;
+}
+
+.home-hover {
+  left: 50%;
+  transform: translateX(-50%);
+  top: 110%;
+}
+
 @media (max-width: 700px) {
   .navbar {
     flex-direction: column;

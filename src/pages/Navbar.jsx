@@ -16,7 +16,10 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="navbar-logo">NestFindr</Link>
+      <div className="navbar-logo-wrapper" style={{ position: 'relative', display: 'inline-block' }}>
+        <Link to="/" className="navbar-logo">NestFindr</Link>
+        <span className="dashboard-hover home-hover">Home</span>
+      </div>
       <div className="navbar-links">
         <Link to="/listings" className={`navbar-link${location.pathname === '/listings' ? ' active' : ''}`}>Listings</Link>
         <Link to="/calculator" className={`navbar-link${location.pathname === '/calculator' ? ' active' : ''}`}>Calculator</Link>
