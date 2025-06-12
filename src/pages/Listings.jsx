@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState /*, useEffect */ } from 'react';
 import PropertyCard from '../components/PropertyCard';
 import Pagination from '../components/Pagination';
 import '../styles/Listings.css';
@@ -14,14 +14,13 @@ const dummyProperties = Array.from({ length: 180 }, (_, i) => ({
 }));
 
 const Listings = () => {
-  // Use dummy data by default
-  const [properties, setProperties] = useState(dummyProperties);
-  const [loading, setLoading] = useState(false); // Not loading by default for dummy data
+  const [properties] = useState(dummyProperties);
   const [currentPage, setCurrentPage] = useState(1);
   const propertiesPerPage = 8;
 
   // --- API logic: Uncomment this block when your API is ready ---
   /*
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {

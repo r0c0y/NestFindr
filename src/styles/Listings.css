@@ -160,6 +160,10 @@ html, body, #root {
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(255, 115, 0, 0.09);
   transition: box-shadow 0.18s, transform 0.18s;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
 }
 
 .property-card:hover {
