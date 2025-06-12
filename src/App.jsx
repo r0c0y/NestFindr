@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import Login from './auth/Login';
 import Signup from './auth/Signup'
 import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
@@ -22,7 +23,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </>
   );

@@ -10,7 +10,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
-
+import Dashboard from './pages/Dashboard';
 
 import Navbar from './pages/Navbar';
 
@@ -25,7 +25,7 @@ const App1 = () => (
       <Route path="/contact" element={<Contact />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-   
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   </BrowserRouter>
 );

@@ -68,6 +68,13 @@
   align-items: center;
 }
 
+.dashboard-edit-fields-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
 .dashboard-input {
   padding: 7px 10px;
   border-radius: 6px;
@@ -95,6 +102,11 @@
 
 .dashboard-btn:hover {
   background: #1976d2;
+}
+
+.dashboard-btn-cancel {
+  background: #bbb !important;
+  color: #333 !important;
 }
 
 .dashboard-section {
@@ -147,4 +159,30 @@
   color: #ff7300;
   text-align: center;
   font-size: 1.2rem;
+}
+
+.dashboard-success,
+.dashboard-success-fade {
+  color: #388e3c;
+  background: #e8f5e9;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  border: 1.5px solid #b2dfdb;
+  box-shadow: 0 2px 8px rgba(56, 142, 60, 0.08);
+  transition: opacity 0.5s;
+}
+
+.dashboard-success-fade {
+  animation: fadeOut 0.5s 4.5s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

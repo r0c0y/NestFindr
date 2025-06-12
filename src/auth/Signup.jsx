@@ -20,6 +20,13 @@ const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
+  // Calculate max DOB for 13+ (2012-12-31 if this year is 2025)
+  const maxDob = (() => {
+    const d = new Date();
+    d.setFullYear(d.getFullYear() - 13);
+    return d.toISOString().split('T')[0];
+  })();
+
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async e => {
@@ -98,6 +105,7 @@ const Signup = () => {
           value={form.dob}
           onChange={handleChange}
           required
+          max={maxDob}
           className={form.dob ? 'filled' : ''}
         />
         <select
