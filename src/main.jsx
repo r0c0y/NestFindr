@@ -29,5 +29,9 @@ const App1 = () => (
     </Routes>
   </BrowserRouter>
 );
-
+if (sessionStorage.redirect) {
+  const redirect = sessionStorage.redirect;
+  delete sessionStorage.redirect;
+  window.history.replaceState(null, '', redirect);
+}
 ReactDOM.createRoot(document.getElementById('root')).render(<App1 />);
