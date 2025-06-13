@@ -251,3 +251,28 @@
   background: #fff;
 }
 
+.remove-bookmark-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  border: none;
+  font-size: 20px;
+  line-height: 28px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s ease;
+}
+.remove-bookmark-btn:hover {
+  background: red;
+  transform: scale(1.1);
+}
+
+/* No changes needed for step 4, your CSS is already set up for Firestore integration and bookmark feedback.
+   You can proceed to use Firestore in your code as you are already doing. */
+

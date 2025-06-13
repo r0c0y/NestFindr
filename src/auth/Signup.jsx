@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { auth, db } from '../firebase';
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Auth.css';
 
@@ -66,6 +67,23 @@ const Signup = () => {
     }
     try {
       const userCred = await createUserWithEmailAndPassword(auth, form.email, form.password);
+
+      // --- ADDED: Update Firebase Auth profile with full name ---
+      await updateProfile(userCred.user, {
+        displayName: form.fullName
+      });
+
+      // --- ADDED: Save user data to Firestore ---
+      const userDocRef = doc(db, "users", userCred.user.uid);
+      await setDoc(userDocRef, {
+        displayName: form.fullName,
+        email: form.email,
+        address: form.address,
+        dob: form.dob,
+        referral: form.referral === 'Other' ? form.referralOther : form.referral,
+        createdAt: new Date()
+      });
+
       await sendEmailVerification(userCred.user);
       setSuccess('Signup successful! Please verify your email. Redirecting to login...');
       setTimeout(() => {
