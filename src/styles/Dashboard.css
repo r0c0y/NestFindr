@@ -186,3 +186,28 @@
     visibility: hidden;
   }
 }
+
+.dashboard-nav {
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 24px;
+}
+.dashboard-nav-link {
+  padding: 12px 18px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+.dashboard-nav-link:hover {
+  color: #000;
+}
+.dashboard-nav-link.active {
+  color: #ff7300;
+  border-bottom-color: #ff7300;
+}
+.dashboard-content {
+  padding-top: 16px;
+}

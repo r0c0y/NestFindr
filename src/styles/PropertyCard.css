@@ -1,3 +1,71 @@
+/* Reminder button styles */
+.reminder-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-out;
+}
+
+.reminder-btn:hover {
+  background-color: #1976d2;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.2);
+}
+
+.reminder-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(25, 118, 210, 0.1);
+}
+
+.dashboard-reminder-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 16px;
+  justify-content: center;
+}
+
+.dashboard-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+  .reminder-btn-text {
+    display: none;
+  }
+  
+  .reminder-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 18px;
+  }
+  
+  .dashboard-reminder-btn .reminder-btn-text {
+    display: inline;
+  }
+  
+  .dashboard-reminder-btn {
+    width: 100%;
+    height: auto;
+    padding: 10px 16px;
+    border-radius: 20px;
+  }
+}
+
 .property-card {
   background: #ffffff;
   border-radius: 16px;
@@ -147,6 +215,14 @@
   position: relative;
 }
 
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
 .bookmark-inline {
   display: flex;
   align-items: center;
@@ -154,6 +230,66 @@
   position: relative;
   min-width: 44px;
   min-height: 44px;
+}
+
+/* Calculator button styles */
+.calculate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: #fff4e6;
+  color: #ff7300;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-out;
+}
+
+.calculate-btn:hover {
+  background-color: #ff7300;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 115, 0, 0.2);
+}
+
+.calculate-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(255, 115, 0, 0.1);
+}
+
+.dashboard-calculate-btn {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 16px;
+  justify-content: center;
+}
+
+.dashboard-actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.bookmark-status-container {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.title-link:hover h3 {
+  color: #2196F3;
 }
 
 .bookmark-inline .bookmark-status {
@@ -234,6 +370,41 @@
     padding: 20px;
   }
 
+  .calculate-btn-text, 
+  .reminder-btn-text {
+    display: none;
+  }
+
+  .calculate-btn,
+  .reminder-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 18px;
+  }
+
+  .dashboard-calculate-btn .calculate-btn-text,
+  .dashboard-reminder-btn .reminder-btn-text {
+    display: inline;
+  }
+
+  .dashboard-calculate-btn,
+  .dashboard-reminder-btn {
+    width: 100%;
+    height: auto;
+    padding: 10px 16px;
+    border-radius: 20px;
+  }
+
+  .card-actions {
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .date-bookmark-row {
+    flex-wrap: wrap;
+  }
 }
 
 .bookmark-feedback-popup {
@@ -255,22 +426,48 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: rgba(0,0,0,0.6);
   color: white;
   border: none;
-  font-size: 20px;
-  line-height: 28px;
-  text-align: center;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   z-index: 5;
   transition: all 0.2s ease;
 }
+
 .remove-bookmark-btn:hover {
-  background: red;
+  background: #d32f2f;
   transform: scale(1.1);
+}
+
+.remove-bookmark-btn.loading {
+  pointer-events: none;
+  background: rgba(0,0,0,0.4);
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.bookmark-removed-indicator {
+  margin-top: 8px;
+  text-align: center;
 }
 
 /* No changes needed for step 4, your CSS is already set up for Firestore integration and bookmark feedback.

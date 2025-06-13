@@ -1,7 +1,142 @@
+/* Login prompt styling */
+.login-prompt {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s forwards, slideOut 0.3s 2.7s forwards;
+  max-width: 300px;
+}
+
+/* Data source badge */
+.data-source-badge {
+  display: inline-block;
+  background-color: #ff7300;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Add login prompt styling */
+.login-prompt {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s forwards, slideOut 0.3s 2.7s forwards;
+  max-width: 300px;
+}
+
+.data-source-badge {
+  display: inline-block;
+  background-color: #ff7300;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  margin-left: 10px;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* 
+ * CSS VARIABLES
+ * -------------
+ * Main color scheme and design tokens for NestFindr
+ */
+:root {
+  /* Colors */
+  --color-primary: #ff7300;
+  --color-primary-light: rgba(255, 115, 0, 0.2);
+  --color-primary-lighter: rgba(255, 115, 0, 0.1);
+  --color-primary-dark: #e65a00;
+  --color-primary-bg: #FFF4E6;
+  --color-secondary: #1976D2;
+  --color-secondary-light: #E3F0FF;
+  --color-white: #ffffff;
+  --color-gray-50: #f8f8f8;
+  --color-gray-500: #595959;
+  --color-gray-700: #4a4a4a;
+  
+  /* Breakpoints */
+  --breakpoint-tablet: 768px;
+  --breakpoint-mobile: 480px;
+  
+  /* Shadows */
+  --shadow-sm: 0 4px 16px rgba(255, 115, 0, 0.09);
+  --shadow-md: 0 4px 20px rgba(255, 115, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(255, 115, 0, 0.16);
+  
+  /* Transitions */
+  --transition-default: all 0.25s ease-out;
+  --transition-fast: all 0.18s ease-out;
+}
+/* 
+ * BASE STYLES
+ * -----------
+ */
 html, body, #root {
   background-image: radial-gradient(ellipse at top left, rgba(255, 115, 0, 0.12) 0%, transparent 40%),
                     radial-gradient(ellipse at bottom right, rgba(25, 118, 210, 0.08) 0%, transparent 50%);
-  /* background-color: #F8F9FA; */
+  background-attachment: fixed; /* Prevent background shift on scroll */
   background-repeat: no-repeat;
   min-height: 100vh;
   width: 100%;
@@ -9,7 +144,10 @@ html, body, #root {
   padding: 0;
   overflow-x: hidden;
 }
-
+/* 
+ * LAYOUT COMPONENTS
+ * ----------------
+ */
 .listings-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -18,19 +156,77 @@ html, body, #root {
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   margin-top: 80px; /* Add space for fixed navbar */
+  position: relative;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+/* Listings header with controls */
+.listings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+  gap: 24px;
 }
 
 .listings-title {
   font-size: 2.3rem;
   font-weight: 800;
-  color: #ff7300;
-  text-align: center;
-  margin-bottom: 48px;
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 1.5px;
   text-shadow: 0 2px 8px rgba(255, 115, 0, 0.10);
+  margin: 0;
 }
 
+.listings-filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.sort-select,
+.filter-select {
+  padding: 12px 20px;
+  border: 2px solid var(--color-primary-light);
+  border-radius: 30px;
+  background-color: var(--color-white);
+  font-size: 14px;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: var(--transition-default);
+  font-weight: 600;
+}
+
+.sort-select:hover,
+.filter-select:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 115, 0, 0.15);
+}
+
+.sort-select:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-lighter);
+}
+
+/* Add focus-visible states for better keyboard navigation */
+.sort-select:focus-visible,
+.filter-select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-lighter);
+}
+
+/* 
+ * GRID LAYOUT
+ * ----------
+ */
 .properties-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -38,17 +234,114 @@ html, body, #root {
   margin-bottom: 48px;
 }
 
-.no-properties {
-  color: #ff7300;
+/* 
+ * LOADING STATES
+ * -------------
+ */
+.listings-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 24px;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+  position: relative;
+  z-index: 20; /* Above other content and overlays */
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid var(--color-primary-lighter);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+  z-index: 25; /* Above all other elements */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.listings-loading p {
+  color: var(--color-primary);
   font-size: 1.2rem;
-  text-align: center;
-  padding: 32px 0;
   font-weight: 600;
 }
 
-/* =========================================== */
-/* === UPDATED PAGINATION STYLES START HERE === */
-/* =========================================== */
+/* 
+ * ERROR & EMPTY STATES
+ * -------------------
+ */
+.listings-error {
+  text-align: center;
+  padding: 48px 24px;
+  background: rgba(255, 115, 0, 0.05);
+  border-radius: 16px;
+  margin: 32px auto;
+  max-width: 600px;
+  border: 2px solid var(--color-primary-lighter);
+}
+
+.listings-error h2 {
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+.listings-error p {
+  color: var(--color-gray-700); /* Darker for better contrast */
+  margin-bottom: 24px;
+}
+
+.retry-button {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-out;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.retry-button:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 115, 0, 0.3);
+}
+
+.no-results {
+  text-align: center;
+  padding: 48px 24px;
+  background: rgba(255, 115, 0, 0.05);
+  border-radius: 16px;
+  margin: 32px auto;
+  max-width: 600px;
+  border: 2px solid var(--color-primary-lighter);
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* 
+ * PAGINATION COMPONENTS
+ * --------------------
+ */
 
 .pagination {
   display: flex;
@@ -57,10 +350,12 @@ html, body, #root {
   gap: 8px; 
   padding: 12px; 
   margin: 48px auto 0; 
-  background-color: #ffffff; 
+  background-color: var(--color-white); 
   border-radius: 50px; 
-  box-shadow: 0 4px 20px rgba(255, 115, 0, 0.15); 
-  width: fit-content; 
+  box-shadow: var(--shadow-md);
+  width: fit-content;
+  position: relative;
+  z-index: 5;
 }
 
 
@@ -68,105 +363,264 @@ html, body, #root {
   font-family: 'Inter', sans-serif; 
   border: none;
   cursor: pointer;
-  transition: all 0.25s ease-out; 
+  transition: var(--transition-default); 
 }
 
 
 .nav-button {
   padding: 10px 16px;
-  background-color: #FFF4E6; 
-  color: #FF7300; 
+  background-color: var(--color-primary-bg); 
+  color: var(--color-primary);
   border-radius: 30px;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase; 
   letter-spacing: 0.5px;
+  min-width: 64px; 
+  text-align: center;
 }
 
 .nav-button:hover:not(:disabled) {
-  background-color: #FF7300; 
-  color: #FFFFFF; 
+  background-color: var(--color-primary); 
+  color: var(--color-white);
   transform: translateY(-2px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .nav-button:disabled {
-  background-color: #F8F8F8; 
-  color: #BDBDBD; 
+  background-color: var(--color-gray-50); 
+  color: var(--color-gray-500); /* Darker for better contrast */
   cursor: not-allowed;
   transform: none; 
   box-shadow: none;
 }
 
-.page-number {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent; 
-  color: #1976D2;
-  border-radius: 50%;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.page-number:hover:not(.active) {
-  background-color: #E3F0FF;
-  color: #1976D2; 
-}
-
-.page-number.active {
-  background-color: #1976D2; 
-  color: #FFFFFF; 
-  transform: scale(1.1); 
-  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3); 
-}
-
-.pagination-ellipsis {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #757575;
-  font-size: 16px;
-
-}
-
-.nav-button {
-  min-width: 64px; 
-  text-align: center;
+.pagination-button:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
 }
 
 .page-number,
 .pagination-ellipsis {
   width: 40px;
+  height: 40px;
   min-width: 40px;
   max-width: 40px;
-  text-align: center;
-  display: inline-flex;
-  justify-content: center;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
 }
 
-/* ========================================= */
-/* === UPDATED PAGINATION STYLES END HERE === */
-/* ========================================= */
+.page-number {
+  background-color: transparent; 
+  color: var(--color-secondary);
+  border-radius: 50%;
+  font-weight: 600;
+}
+
+.page-number:hover:not(.active) {
+  background-color: var(--color-secondary-light);
+  color: var(--color-secondary);
+}
+
+.page-number.active {
+  background-color: var(--color-secondary); 
+  color: var(--color-white); 
+  transform: scale(1.1); 
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3); 
+}
+
+.pagination-ellipsis {
+  color: var(--color-gray-500);
+}
+
+/* 
+ * PROPERTY CARD COMPONENTS
+ * -----------------------
+ */
 
 
 .property-card {
-  background: #f5c5c5;
+  background: var(--color-white);
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(255, 115, 0, 0.09);
-  transition: box-shadow 0.18s, transform 0.18s;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
   display: flex;
   flex-direction: column;
   padding: 0;
   overflow: hidden;
+  position: relative;
+  z-index: 2;
 }
 
 .property-card:hover {
-  box-shadow: 0 8px 32px rgba(255, 115, 0, 0.16);
+  box-shadow: var(--shadow-lg);
   transform: translateY(-2px) scale(1.01);
+}
+
+/* 
+ * RESPONSIVE DESIGN
+ * ----------------
+ */
+@media (max-width: var(--breakpoint-tablet)) {
+  .listings-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .listings-filters {
+    width: 100%;
+    flex-wrap: wrap; /* Added to ensure better wrapping on smaller screens */
+  }
+
+  .sort-select,
+  .filter-select {
+    flex: 1;
+    min-width: 140px; /* Ensure minimum readable width */
+  }
+  
+  /* Improve pagination on tablet */
+  .pagination {
+    padding: 8px;
+    gap: 6px;
+  }
+}
+
+@media (max-width: var(--breakpoint-mobile)) {
+  .listings-container {
+    padding: 16px;
+    margin-top: 70px; /* Adjusted for fixed navbar */
+  }
+
+  .listings-title {
+    font-size: 1.6rem;
+  }
+  
+  .listings-filters {
+    gap: 10px; /* Reduced gap */
+  }
+  
+  .sort-select,
+  .filter-select {
+    padding: 8px 14px; /* Smaller padding */
+    font-size: 13px; /* Smaller font */
+  }
+
+  .properties-grid {
+    grid-template-columns: 1fr;
+    gap: 24px; /* Reduced gap */
+  }
+  
+  /* Smaller pagination on mobile */
+  .pagination {
+    padding: 4px;
+    gap: 2px; /* Further reduce gap for more items on screen */
+  }
+  
+  .page-number, 
+  .pagination-ellipsis {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    max-width: 32px;
+    font-size: 13px;
+  }
+  
+  .nav-button {
+    padding: 6px 10px;
+    min-width: 48px;
+    font-size: 12px;
+  }
+}
+
+/* Add styles for disabled state */
+.sort-select,
+.filter-select {
+  transition: var(--transition-default), opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.sort-select:disabled,
+.filter-select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: var(--color-gray-50);
+  border-color: var(--color-primary-lighter);
+  color: rgba(255, 115, 0, 0.5);
+}
+
+/* 
+ * LOADING STATE ANIMATIONS
+ * ----------------------
+ */
+.property-card.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.property-card.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite;
+  z-index: 3;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+/* 
+ * FILTERING OVERLAY
+ * ---------------
+ */
+.listings-container.is-filtering::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 10;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+/* 
+ * Z-INDEX HIERARCHY
+ * ---------------
+ * 1: .listings-container (base)
+ * 2: .property-card
+ * 3: .property-card.loading::after 
+ * 5: .pagination
+ * 10: .listings-container.is-filtering::before
+ * 20: .listings-loading
+ * 25: .loading-spinner
+ */
+/* 
+ * BROWSER-SPECIFIC FIXES
+ * --------------------
+ */
+@-moz-document url-prefix() {
+  .sort-select:focus-visible,
+  .filter-select:focus-visible,
+  .pagination-button:focus-visible {
+    outline-style: solid;
+    outline-width: 2px;
+  }
 }

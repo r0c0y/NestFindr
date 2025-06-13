@@ -1,0 +1,407 @@
+/* Reminder button styling */
+.reminder-section {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.reminder-button {
+  background-color: #1976D2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+}
+
+.reminder-button:hover {
+  background-color: #1565C0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+}
+
+.reminder-button.success {
+  background-color: #4CAF50;
+  cursor: default;
+  transform: none;
+}
+
+.reminder-error {
+  color: #e53935;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+/* Login prompt styling */
+.login-prompt {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+  animation: slideDown 0.3s forwards;
+}
+
+.login-prompt p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.login-prompt-button {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.login-prompt-button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+@keyframes slideDown {
+  from {
+    top: -80px;
+    opacity: 0;
+  }
+  to {
+    top: -50px;
+    opacity: 1;
+  }
+}
+
+/* CSS Variables to match the application theme */
+:root {
+  /* Colors from Listings.css */
+  --color-primary: #ff7300;
+  --color-primary-light: rgba(255, 115, 0, 0.2);
+  --color-primary-lighter: rgba(255, 115, 0, 0.1);
+  --color-primary-dark: #e65a00;
+  --color-primary-bg: #FFF4E6;
+  --color-secondary: #1976D2;
+  --color-secondary-light: #E3F0FF;
+  --color-white: #ffffff;
+  --color-gray-50: #f8f8f8;
+  --color-gray-500: #595959;
+  --color-gray-700: #4a4a4a;
+  
+  /* Shadows */
+  --shadow-sm: 0 4px 16px rgba(255, 115, 0, 0.09);
+  --shadow-md: 0 4px 20px rgba(255, 115, 0, 0.15);
+  --shadow-lg: 0 8px 32px rgba(255, 115, 0, 0.16);
+}
+
+.calculator-container {
+  max-width: 600px; /* Further increased width to ensure proper containment */
+  width: 100%;
+  margin: 32px auto;
+  padding: 36px 32px; /* Increased padding for better spacing */
+  background: linear-gradient(135deg, #fff8f0 60%, #ffefd5 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(255, 115, 0, 0.08), 0 1.5px 8px rgba(0,0,0,0.04);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+.calculator-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(255, 115, 0, 0.10);
+}
+
+.property-context {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  text-align: center;
+  border-left: 4px solid var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.property-context p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-gray-700);
+}
+
+.property-context strong {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.calculator-form {
+  background: var(--color-white);
+  padding: 32px 28px; /* Increased padding */
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 28px;
+  border: 1px solid var(--color-primary-bg);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible; /* Changed to visible to prevent clipping */
+  max-width: 100%; /* Ensure form doesn't exceed container width */
+}
+
+.form-group {
+  margin-bottom: 24px; /* Increased margin for better spacing */
+  position: relative;
+  width: 100%; /* Ensure full width */
+  box-sizing: border-box;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-gray-700);
+  margin-bottom: 10px; /* Slightly increased margin */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px; /* Increased padding for better tap targets */
+  font-size: 1rem;
+  color: var(--color-gray-700);
+  background: var(--color-primary-bg);
+  border: 1.5px solid var(--color-primary-light);
+  border-radius: 8px;
+  transition: all 0.25s ease-out;
+  box-sizing: border-box;
+  max-width: 100%; /* Ensure input doesn't exceed container width */
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-lighter);
+}
+
+.form-group input.error {
+  border-color: #e53935;
+  background-color: #fff5f5;
+}
+
+.error-message {
+  color: #e53935;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.formatted-value {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.calculate-button {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(90deg, #ff7300 0%, #ff9248 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(255, 115, 0, 0.2);
+  letter-spacing: 0.5px;
+  margin-top: 16px;
+  text-transform: uppercase;
+}
+
+.calculate-button:hover {
+  background: linear-gradient(90deg, #ff9248 0%, #ff7300 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 115, 0, 0.3);
+}
+
+.calculate-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(255, 115, 0, 0.2);
+}
+
+.result {
+  background: var(--color-white);
+  padding: 28px; /* Increased padding */
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  border: 1px solid var(--color-primary-light);
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%; /* Ensure result doesn't exceed container width */
+  overflow: hidden; /* Prevent content from overflowing */
+}
+
+.result-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 16px 0;
+  letter-spacing: 0.5px;
+}
+
+.breakdown {
+  margin-top: 16px;
+  text-align: left;
+}
+
+.breakdown h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-primary-lighter);
+  font-size: 1rem;
+}
+
+.breakdown-item:last-child {
+  border-bottom: none;
+}
+
+.breakdown-item span:first-child {
+  font-weight: 600;
+  color: #555;
+}
+
+.breakdown-item span:last-child {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .calculator-container {
+    max-width: 100%;
+    margin: 16px;
+    padding: 28px 24px; /* Slightly increased padding */
+  }
+  
+  .calculator-form {
+    padding: 24px 20px; /* Increased padding */
+  }
+  
+  .calculator-title {
+    font-size: 1.8rem;
+  }
+  
+  .form-group label {
+    font-size: 0.95rem;
+  }
+  
+  .form-group input {
+    padding: 12px 14px; /* Increased padding for better touch targets */
+  }
+  
+  .calculate-button {
+    padding: 14px; /* Increased button padding */
+    font-size: 1rem;
+  }
+  
+  .result-title {
+    font-size: 1.3rem;
+  }
+  
+  .result {
+    padding: 24px 20px; /* Increased padding */
+  }
+}
+
+/* Add even smaller screen adjustments */
+@media screen and (max-width: 480px) {
+  .calculator-container {
+    margin: 10px;
+    padding: 24px 20px;
+  }
+  
+  .calculator-form {
+    padding: 20px 16px;
+  }
+  
+  .form-group {
+    margin-bottom: 16px;
+  }
+  
+  .form-group input {
+    padding: 10px 12px;
+  }
+  
+  .calculator-title {
+    font-size: 1.6rem;
+  }
+  
+  .property-context {
+    padding: 10px 12px;
+  }
+}
+
+/* Add focus-visible styles for better keyboard navigation */
+.form-group input:focus-visible,
+.calculate-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Property calculator button (to be used in property cards) */
+.calculate-mortgage-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary);
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-out;
+  margin-top: 8px;
+}
+
+.calculate-mortgage-btn:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.calculate-mortgage-btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
