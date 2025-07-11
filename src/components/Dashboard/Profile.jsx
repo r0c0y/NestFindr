@@ -4,6 +4,8 @@ import { updateProfile, signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import ProfileForm from './ProfileForm';
+import Stats from './Stats';
+
 
 const Profile = () => {
   const user = auth.currentUser;
@@ -128,22 +130,31 @@ const Profile = () => {
           uploadProgress={uploadProgress}
         />
       ) : (
-        <div className="profile-display">
-          <div className="profile-header">
-            <span className="dashboard-avatar">
-              {profileImageUrl ? <img src={profileImageUrl} alt="avatar" /> : (name[0] || '?').toUpperCase()}
-            </span>
-            <div className="profile-header-info">
-              <h3 className="dashboard-name">{name}</h3>
-              <p className="dashboard-email">{user.email}</p>
+        <div className="profile-display-grid">
+          <div className="profile-info-card">
+            <div className="profile-header">
+              <span className="dashboard-avatar">
+                {profileImageUrl ? <img src={profileImageUrl} alt="avatar" /> : (name[0] || '?').toUpperCase()}
+              </span>
+              <div className="profile-header-info">
+                <h3 className="dashboard-name">{name}</h3>
+                <p className="dashboard-email">{user.email}</p>
+              </div>
+              <button className="dashboard-btn" onClick={() => setEditing(true)}>Edit</button>
             </div>
-            <button className="dashboard-btn" onClick={() => setEditing(true)}>Edit Profile</button>
+            <div className="profile-details-grid">
+              <p><strong>Age:</strong> {age ? `${age} years` : 'Not set'}</p>
+              <p><strong>Mobile:</strong> {mobile || 'Not set'}</p>
+              <p><strong>Address:</strong> {address || 'Not set'}</p>
+              <p><strong>Bio:</strong> {bio || 'Not set'}</p>
+            </div>
           </div>
-          <div className="profile-details-grid">
-            <p><strong>DOB:</strong> {dob || 'Not set'} {age && `(Age: ${age})`}</p>
-            <p><strong>Mobile:</strong> {mobile || 'Not set'}</p>
-            <p><strong>Address:</strong> {address || 'Not set'}</p>
-            <p><strong>Bio:</strong> {bio || 'Not set'}</p>
+          <div className="profile-stats-card">
+            <div className="dashboard-streak-counter">
+              <span role="img" aria-label="fire">🔥</span>
+              <p>You've visited <strong>5</strong> days in a row!</p>
+            </div>
+            <Stats />
           </div>
         </div>
       )}

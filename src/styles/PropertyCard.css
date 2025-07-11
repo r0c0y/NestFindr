@@ -72,17 +72,7 @@
   overflow: hidden;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.5s ease forwards;
-}
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
-}
 
 .property-card:hover {
   transform: translateY(-6px);
@@ -283,13 +273,13 @@
   z-index: 10;
 }
 
-.title-link {
+.property-card a {
   text-decoration: none;
   color: inherit;
 }
 
-.title-link:hover h3 {
-  color: #2196F3;
+.property-card a:hover h3 {
+  color: #ff7300; /* Or your desired hover color */
 }
 
 .bookmark-inline .bookmark-status {

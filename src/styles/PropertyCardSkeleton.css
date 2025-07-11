@@ -5,14 +5,6 @@
   overflow: hidden;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   height: 100%;
-  opacity: 0;
-  animation: fadeIn 0.5s ease forwards;
-}
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
 }
 
 .card-image-section-skeleton {
@@ -106,23 +98,19 @@
   border-radius: 50%;
 }
 
-/* Pulse animation for loading effect */
+/* Shimmer animation for loading effect */
 .pulse {
-  animation: pulse 1.5s infinite;
-  background: linear-gradient(90deg, 
-    #f3f3f3 0%, 
-    #f9f9f9 50%, 
-    #f3f3f3 100%
-  );
-  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%);
+  background-size: 1000px 100%;
 }
 
-@keyframes pulse {
+@keyframes shimmer {
   0% {
-    background-position: 200% 0;
+    background-position: -500px 0;
   }
   100% {
-    background-position: -200% 0;
+    background-position: 500px 0;
   }
 }
 

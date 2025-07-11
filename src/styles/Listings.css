@@ -184,8 +184,79 @@ html, body, #root {
 .listings-filters {
   display: flex;
   gap: 16px;
-  align-items: center;
+  margin-top: 24px;
 }
+
+.listings-filters-container {
+  margin-bottom: 24px;
+}
+
+.search-bar {
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #ff7300;
+  box-shadow: 0 0 0 3px rgba(255, 115, 0, 0.1);
+}
+
+.filter-bar {
+  display: flex;
+  gap: 16px;
+}
+
+.no-results-container {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #fdfdfd;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-top: 30px;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  color: #ff7300;
+  margin-bottom: 20px;
+}
+
+.no-results-container h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.no-results-container p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.reset-filters-btn {
+  background-color: #ff7300;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.reset-filters-btn:hover {
+  background-color: #e66400;
+}
+
 
 .sort-select,
 .filter-select {

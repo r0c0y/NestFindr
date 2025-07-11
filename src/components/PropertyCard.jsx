@@ -16,9 +16,6 @@ const PropertyCard = ({
   date,
   isBookmarked,
   onBookmark,
-  bookmarkLoading,
-  bookmarkSaved,
-  bookmarkRemoved,
   isDashboardView,
   onRemoveBookmark,
   onCalculate,
@@ -43,36 +40,23 @@ const PropertyCard = ({
     }
   };
   return (
-    <div className={`property-card ${isDashboardView ? 'dashboard-view' : ''}`}>
+    <Link to={`/listings/${id}`} className={`property-card ${isDashboardView ? 'dashboard-view' : ''}`}>
       {isDashboardView && (
         <button
-          onClick={onRemoveBookmark}
-          className={`remove-bookmark-btn ${bookmarkLoading ? 'loading' : ''}`}
+          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemoveBookmark(); }}
+          className="remove-bookmark-btn"
           title="Remove"
           type="button"
-          disabled={bookmarkLoading}
         >
-          {bookmarkLoading ? <span className="loading-spinner"></span> : <BsTrash />}
+          <BsTrash />
         </button>
       )}
       <div className="card-image-section">
-        {id ? (
-          <Link to={`/listings/${id}`}>
-            <img loading="lazy" src={displayImage} alt={title} />
-          </Link>
-        ) : (
-          <img loading="lazy" src={displayImage} alt={title} />
-        )}
+        <img loading="lazy" src={displayImage} alt={title} />
         <span className="price-badge">{formatCurrency(price)}</span>
       </div>
       <div className="card-details-section">
-        {id ? (
-          <Link to={`/listings/${id}`} className="title-link">
-            <h3>{title}</h3>
-          </Link>
-        ) : (
-          <h3>{title}</h3>
-        )}
+        <h3>{title}</h3>
         <p className="address">{address}</p>
         
         {!isDashboardView && (
@@ -102,27 +86,12 @@ const PropertyCard = ({
                 )}
               <span className="bookmark-inline">
                 <button
-                  className={`bookmark-btn${isBookmarked ? ' bookmarked' : ''}${bookmarkLoading ? ' loading' : ''}`}
-                  onClick={onBookmark}
+                  className={`bookmark-btn${isBookmarked ? ' bookmarked' : ''}`}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); onBookmark(); }}
                   aria-label="Bookmark this property"
-                  disabled={bookmarkLoading}
                 >
                   {isBookmarked ? <BsBookmarkFill /> : <BsBookmark />}
                 </button>
-                <div className="bookmark-status-container">
-                  {bookmarkLoading && isBookmarked && (
-                    <span className="bookmark-status bookmark-status-removing">Removing...</span>
-                  )}
-                  {bookmarkLoading && !isBookmarked && (
-                    <span className="bookmark-status bookmark-status-loading">Saving...</span>
-                  )}
-                  {!bookmarkLoading && bookmarkSaved && (
-                    <span className="bookmark-status bookmark-status-success">Saved!</span>
-                  )}
-                  {!bookmarkLoading && bookmarkRemoved && (
-                    <span className="bookmark-status bookmark-status-removed">Removed!</span>
-                  )}
-                </div>
               </span>
             </div>
           </div>
@@ -130,11 +99,6 @@ const PropertyCard = ({
         
         {isDashboardView && (
           <div className="dashboard-actions">
-            {bookmarkRemoved && (
-              <div className="bookmark-removed-indicator">
-                <span className="bookmark-status bookmark-status-removed">Property removed from bookmarks</span>
-              </div>
-            )}
             <div className="dashboard-buttons">
               <button
                 className="calculate-btn dashboard-calculate-btn"
@@ -161,7 +125,7 @@ const PropertyCard = ({
           </div>
         )}
       </div>
-    </div>
+    </Link>
   );
 };
 

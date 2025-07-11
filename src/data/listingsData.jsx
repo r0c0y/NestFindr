@@ -29,7 +29,7 @@ const features = [
 ];
 
 // Generate realistic listing data
-const listingsData = Array.from({ length: 20 }, (_, i) => {
+const listingsData = Array.from({ length: 50 }, (_, i) => {
   // Choose random location
   const locationIndex = Math.floor(Math.random() * locations.length);
   const location = locations[locationIndex];

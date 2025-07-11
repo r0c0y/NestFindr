@@ -1,56 +1,60 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { auth, db } from '../../firebase';
+import { db } from '../../firebase';
 import { collection, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
 import PropertyCard from '../PropertyCard';
 import listingsData from '../../data/listingsData'; // Import dummy data
+import { FaRegBookmark } from 'react-icons/fa';
 
-const Bookmarks = () => {
-  const user = auth.currentUser;
+const Bookmarks = ({ user }) => {
   const [bookmarkedProps, setBookmarkedProps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [removingId, setRemovingId] = useState(null);
-  const [removeSuccess, setRemoveSuccess] = useState(null);
 
   const fetchBookmarks = useCallback(async () => {
+    console.log("Bookmarks: fetchBookmarks called");
     setLoading(true);
+    setError(''); // Clear any previous errors
     let bookmarkedIds = [];
     let properties = [];
 
     if (user) {
+      console.log("Bookmarks: User is logged in:", user.uid);
       try {
-        // Try Firestore bookmarks first
         const bookmarksRef = collection(db, `users/${user.uid}/bookmarkedProperties`);
         const snapshot = await getDocs(bookmarksRef);
         bookmarkedIds = snapshot.docs.map(d => d.id);
+        console.log("Bookmarks: Fetched Firestore bookmarkedIds:", bookmarkedIds);
       } catch (err) {
-        // If Firestore fails, fallback to local bookmarks
+        console.warn("Bookmarks: Firestore bookmark fetch failed, falling back to local storage.", err);
         bookmarkedIds = JSON.parse(localStorage.getItem('localBookmarks') || '[]');
       }
     } else {
-      // Not logged in, fallback to local bookmarks
+      console.log("Bookmarks: User not logged in, using local storage for bookmarks.");
       bookmarkedIds = JSON.parse(localStorage.getItem('localBookmarks') || '[]');
     }
+    console.log("Bookmarks: Final bookmarkedIds before property fetch:", bookmarkedIds);
 
-    // Try to fetch properties from Firestore, fallback to dummy data
     if (bookmarkedIds.length > 0) {
       try {
-        // Try Firestore properties
+        console.log("Bookmarks: Attempting to fetch properties from Firestore for bookmarked IDs.");
         const propertyPromises = bookmarkedIds.map(id => getDoc(doc(db, 'properties', id)));
         const docs = await Promise.all(propertyPromises);
-        // If all docs are empty, fallback to dummy data
         if (docs.every(d => !d.exists())) {
+          console.warn("Bookmarks: No Firestore properties found for bookmarked IDs, falling back to local listingsData.");
           throw new Error('No Firestore properties found');
         }
         properties = docs.filter(d => d.exists()).map(d => ({ id: d.id, ...d.data() }));
+        console.log("Bookmarks: Fetched properties from Firestore:", properties);
       } catch (err) {
-        // Fallback to dummy data
+        console.warn("Bookmarks: Firestore property fetch failed, falling back to local listingsData.", err);
         properties = listingsData.filter(p => bookmarkedIds.includes(p.id));
+        console.log("Bookmarks: Fetched properties from local listingsData:", properties);
       }
     }
 
     setBookmarkedProps(properties);
     setLoading(false);
+    console.log("Bookmarks: Loading set to false. Final bookmarkedProps:", properties);
   }, [user]);
 
   useEffect(() => {
@@ -58,8 +62,8 @@ const Bookmarks = () => {
   }, [fetchBookmarks]);
 
   const handleRemoveBookmark = async (propertyId) => {
+    setError(''); // Clear any previous errors
     try {
-      setRemovingId(propertyId);
       if (user) {
         await deleteDoc(doc(db, `users/${user.uid}/bookmarkedProperties`, propertyId));
       } else {
@@ -69,13 +73,9 @@ const Bookmarks = () => {
         localStorage.setItem('localBookmarks', JSON.stringify(Array.from(localBookmarks)));
       }
       setBookmarkedProps(prev => prev.filter(p => p.id !== propertyId));
-      setRemoveSuccess(propertyId);
-      setTimeout(() => setRemoveSuccess(null), 3000);
     } catch (err) {
       console.error('Error removing bookmark:', err);
       setError('Failed to remove bookmark. Please try again.');
-    } finally {
-      setRemovingId(null);
     }
   };
 
@@ -103,15 +103,15 @@ const Bookmarks = () => {
               {...prop}
               isDashboardView={true}
               onRemoveBookmark={() => handleRemoveBookmark(prop.id)}
-              bookmarkLoading={removingId === prop.id}
-              bookmarkRemoved={removeSuccess === prop.id}
             />
           ))}
         </div>
       ) : (
-        <div className="dashboard-empty">
-          <p>You haven't saved any properties yet.</p>
-          <p className="dashboard-empty-sub">Properties you bookmark will appear here.</p>
+        <div className="dashboard-empty-state">
+          <FaRegBookmark className="empty-state-icon" />
+          <p className="empty-state-title">No Bookmarks Yet</p>
+          <p className="empty-state-text">Start exploring properties and bookmark your favorites to see them here!</p>
+          <button onClick={() => window.location.href = '/listings'} className="empty-state-btn">Browse Properties</button>
         </div>
       )}
     </div>

@@ -27,7 +27,7 @@ const Dashboard = () => {
         <Routes>
           <Route index element={<Navigate to="profile" replace />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="bookmarks" element={<Bookmarks />} />
+          <Route path="bookmarks" element={<Bookmarks user={user} />} />
           <Route path="preferences" element={<Preferences />} />
           <Route path="reminders" element={<Reminders />} />
         </Routes>
