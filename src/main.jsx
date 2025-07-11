@@ -15,14 +15,17 @@ const Dashboard = lazy(() => import('./pages/Dashboard'));
 const PropertyDetails = lazy(() => import('./pages/PropertyDetails'));
 
 import Navbar from './components/Navbar';
+import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from 'react-hot-toast';
+import './styles/ErrorBoundary.css';
 
 const App1 = () => (
-  <BrowserRouter basename="/NestFindr">
-    <Toaster />
-    <Navbar />
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
+  <ErrorBoundary>
+    <BrowserRouter basename="/NestFindr">
+      <Toaster />
+      <Navbar />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
         {/* Always use exact path for home */}
         <Route path="/" element={<Home />} />
         {/* Optionally, redirect /Home or /NestFindr to / */}
@@ -36,11 +39,12 @@ const App1 = () => (
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/property/:propertyId" element={<PropertyDetails />} />
-        {/* Catch-all: redirect unknown routes to home */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Suspense>
-  </BrowserRouter>
+          {/* Catch-all: redirect unknown routes to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  </ErrorBoundary>
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App1 />);

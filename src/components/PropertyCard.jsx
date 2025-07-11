@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BsBookmark, BsBookmarkFill, BsTrash, BsCalculator, BsBell } from 'react-icons/bs';
 import '../styles/PropertyCard.css';
@@ -27,7 +27,7 @@ const PropertyCard = ({
   const displayImage = image || imageUrl;
 
   // Function to handle mortgage calculator button click
-  const handleCalculateClick = (e) => {
+  const handleCalculateClick = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -38,12 +38,30 @@ const PropertyCard = ({
       // Default behavior: navigate to calculator with pre-filled values
       navigate(`/calculator?price=${price}&property=${encodeURIComponent(title)}`);
     }
-  };
+  }, [id, price, title, onCalculate, navigate]);
+
+  const handleBookmarkClick = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onBookmark();
+  }, [onBookmark]);
+
+  const handleRemoveBookmark = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onRemoveBookmark();
+  }, [onRemoveBookmark]);
+
+  const handleReminderClick = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onAddReminder) onAddReminder();
+  }, [onAddReminder]);
   return (
-    <Link to={`/listings/${id}`} className={`property-card ${isDashboardView ? 'dashboard-view' : ''}`}>
+    <div className={`property-card ${isDashboardView ? 'dashboard-view' : ''}`}>
       {isDashboardView && (
         <button
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRemoveBookmark(); }}
+          onClick={handleRemoveBookmark}
           className="remove-bookmark-btn"
           title="Remove"
           type="button"
@@ -74,11 +92,7 @@ const PropertyCard = ({
                 {showReminderButton && (
                   <button
                     className="reminder-btn"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      if (onAddReminder) onAddReminder();
-                    }}
+                    onClick={handleReminderClick}
                     aria-label="Add mortgage reminder"
                   >
                     <BsBell /> <span className="reminder-btn-text">Reminder</span>
@@ -87,7 +101,7 @@ const PropertyCard = ({
               <span className="bookmark-inline">
                 <button
                   className={`bookmark-btn${isBookmarked ? ' bookmarked' : ''}`}
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); onBookmark(); }}
+                  onClick={handleBookmarkClick}
                   aria-label="Bookmark this property"
                 >
                   {isBookmarked ? <BsBookmarkFill /> : <BsBookmark />}
@@ -111,11 +125,7 @@ const PropertyCard = ({
               {showReminderButton && (
                 <button
                   className="reminder-btn dashboard-reminder-btn"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (onAddReminder) onAddReminder();
-                  }}
+                  onClick={handleReminderClick}
                   aria-label="Add mortgage reminder"
                 >
                   <BsBell /> <span className="reminder-btn-text">Set Reminder</span>
@@ -125,8 +135,8 @@ const PropertyCard = ({
           </div>
         )}
       </div>
-    </Link>
+    </div>
   );
 };
 
-export default PropertyCard;
+export default React.memo(PropertyCard);
