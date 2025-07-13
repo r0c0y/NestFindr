@@ -171,6 +171,46 @@ html, body, #root {
   gap: 24px;
 }
 
+.header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.seed-button {
+  background: linear-gradient(135deg, #ff7300 0%, #e65a00 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 115, 0, 0.2);
+}
+
+.seed-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 115, 0, 0.3);
+}
+
+.seed-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .listings-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .header-content {
+    align-items: center;
+  }
+}
+
 .listings-title {
   font-size: 2.3rem;
   font-weight: 800;

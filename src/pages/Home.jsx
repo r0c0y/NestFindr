@@ -78,6 +78,8 @@ const Home = () => {
           undefined,
           () => {
             // Font loading error fallback
+            const canvas = canvasRef.current;
+            if (!canvas) return;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.font = "bold 64px Arial";
@@ -89,6 +91,8 @@ const Home = () => {
         );
       }).catch(() => {
         // Fallback: draw text on canvas if three/examples import fails
+        const canvas = canvasRef.current;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.font = "bold 64px Arial";

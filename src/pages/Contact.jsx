@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Contact.css';
+import { motion } from 'framer-motion';
+import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -16,17 +18,25 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-container">
+    <motion.div 
+      className="contact-container"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
       <h1 className="contact-title">Contact Us</h1>
       <div className="contact-info">
-        <div>
-          <span role="img" aria-label="email">📧</span> Email: <a href="mailto:info@nestfindr.com">info@nestfindr.com</a>
+        <div className="contact-card">
+          <FiMail className="contact-icon" />
+          <p>Email: <a href="mailto:info@nestfindr.com">info@nestfindr.com</a></p>
         </div>
-        <div>
-          <span role="img" aria-label="phone">📞</span> Phone: <a href="tel:+911234567890">+91 12345 67890</a>
+        <div className="contact-card">
+          <FiPhone className="contact-icon" />
+          <p>Phone: <a href="tel:+911234567890">+91 12345 67890</a></p>
         </div>
-        <div>
-          <span role="img" aria-label="address">🏢</span> Address: 123 Main Street, City, India
+        <div className="contact-card">
+          <FiMapPin className="contact-icon" />
+          <p>Address: 123 Main Street, City, India</p>
         </div>
       </div>
       <form className="contact-form" onSubmit={handleSubmit}>
@@ -62,11 +72,11 @@ const Contact = () => {
         </button>
         {submitted && (
           <div className="contact-success">
-            Thank you for contacting us!
+            Thank you for contacting us! We'll get back to you soon.
           </div>
         )}
       </form>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '../../firebase';
+import { auth, db } from '../../config/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import './Calculator.css';
 
@@ -13,7 +13,7 @@ const Calculator = () => {
   const [homePrice, updateHomePrice] = useState('');
   const [downPayment, updateDownPayment] = useState('');
   const [loanTerm, updateLoanTerm] = useState('30');
-  const [interestRate, updateInterestRate] = useState('8.5'); // Default interest rate
+  const [interestRate, updateInterestRate] = useState('8.5'); // Default interest rate for India
   const [result, updateResult] = useState(null);
   const [errors, setErrors] = useState({});
   const [reminderStatus, setReminderStatus] = useState(null); // 'success', 'error', or null

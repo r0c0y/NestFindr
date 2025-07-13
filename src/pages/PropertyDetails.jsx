@@ -1,83 +1,65 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
-import listingsData from '../data/listingsData'; // For local fallback
-import { BsArrowLeft, BsHeart, BsHeartFill, BsCalculator, BsGeoAlt, BsBuilding, BsCup, BsCart3, BsHospital } from 'react-icons/bs';
-import { MdDirectionsBus } from 'react-icons/md';
-import '../styles/PropertyDetails.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFavorite, removeFavorite } from '../store/favoritesSlice';
 
-// Map components - will be loaded dynamically
-let MapContainer, TileLayer, Marker, Popup, L, CircleMarker;
+import { FaArrowLeft, FaHeart, FaHeartbeat, FaCalculator, FaMapMarkerAlt, FaBuilding, FaCoffee, FaShoppingCart, FaHospital, FaPhone, FaCommentDots, FaRupeeSign, FaHome, FaBed, FaBath, FaExpandArrowsAlt, FaCalendarAlt, FaBook, FaWalking, FaChartLine, FaShareAlt } from 'react-icons/fa';
+import { MdDirectionsBus } from 'react-icons/md';
+import { FacebookShareButton, TwitterShareButton, WhatsappShareButton, EmailShareButton, FacebookIcon, TwitterIcon, WhatsappIcon, EmailIcon } from 'react-share';
+import VirtualBuyingProcess from '../components/VirtualBuyingProcess';
+import Map from '../components/Map'; // Import our new Map component
+import ImageGallery from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
+import '../styles/PropertyDetails.css';
+import ContactAgentModal from '../components/ContactAgentModal'; // Add this import
 
 const PropertyDetails = ({ id: propId, onClose }) => {
-  const { propertyId, id } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const actualId = propId || propertyId || id; // Handle both route parameters and modal prop
+  const dispatch = useDispatch();
+  const allProperties = useSelector((state) => state.properties.listings);
+  const favorites = useSelector((state) => state.favorites.favorites);
+
+  const actualId = propId || id; // Handle both route parameters and modal prop
   const isModal = Boolean(propId && onClose); // Check if used as modal
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [nearbyAmenities, setNearbyAmenities] = useState([]);
   const [showNearbyAmenities, setShowNearbyAmenities] = useState(false);
   const [mapView, setMapView] = useState('street'); // 'street' or 'satellite'
-  const [selectedAmenityType, setSelectedAmenityType] = useState('all');
+  const [showVirtualBuy, setShowVirtualBuy] = useState(false);
+  const [activeAmenity, setActiveAmenity] = useState(null); // New state for active amenity
+  const [pathToAmenity, setPathToAmenity] = useState(null); // New state for path
+  const [showContactModal, setShowContactModal] = useState(false); // Add this state
+  const [selectedAmenityType, setSelectedAmenityType] = useState('all'); // Add this state
+  const [showShareOptions, setShowShareOptions] = useState(false); // New state for sharing options
 
-  useEffect(() => {
-    // Load map components dynamically
-    const loadMapComponents = async () => {
-      try {
-        const [leafletComponents, leafletLibrary] = await Promise.all([
-          import('react-leaflet'),
-          import('leaflet')
-        ]);
-        
-        MapContainer = leafletComponents.MapContainer;
-        TileLayer = leafletComponents.TileLayer;
-        Marker = leafletComponents.Marker;
-        Popup = leafletComponents.Popup;
-        CircleMarker = leafletComponents.CircleMarker;
-        L = leafletLibrary.default;
-        
-        // Fix for default marker icon issue with Webpack
-        delete L.Icon.Default.prototype._getIconUrl;
-        L.Icon.Default.mergeOptions({
-          iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-          iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-          shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-        });
-        
-        setMapLoaded(true);
-      } catch (error) {
-        console.warn('Failed to load map components:', error);
-        setMapLoaded(false);
-      }
-    };
-    
-    loadMapComponents();
-  }, []);
+  const isBookmarked = favorites.some((fav) => fav.id === actualId);
 
   // Mock nearby amenities data (in real app, this would come from an API like Overpass or Google Places)
   const generateNearbyAmenities = useCallback((lat, lng) => {
     const amenities = [
-      { id: 1, name: 'Starbucks Coffee', type: 'cafe', lat: lat + 0.002, lng: lng + 0.001, distance: '200m', icon: BsCup },
-      { id: 2, name: 'Central Hospital', type: 'hospital', lat: lat - 0.003, lng: lng + 0.002, distance: '450m', icon: BsHospital },
+      { id: 1, name: 'Starbucks Coffee', type: 'cafe', lat: lat + 0.002, lng: lng + 0.001, distance: '200m', icon: FaCoffee },
+      { id: 2, name: 'Central Hospital', type: 'hospital', lat: lat - 0.003, lng: lng + 0.002, distance: '450m', icon: FaHospital },
       { id: 3, name: 'Metro Station', type: 'transport', lat: lat + 0.001, lng: lng - 0.002, distance: '150m', icon: MdDirectionsBus },
-      { id: 4, name: 'Shopping Mall', type: 'shopping', lat: lat - 0.001, lng: lng + 0.003, distance: '300m', icon: BsCart3 },
-      { id: 5, name: 'Office Complex', type: 'office', lat: lat + 0.004, lng: lng - 0.001, distance: '600m', icon: BsBuilding },
-      { id: 6, name: 'Local Cafe', type: 'cafe', lat: lat - 0.002, lng: lng - 0.001, distance: '250m', icon: BsCup },
+      { id: 4, name: 'Shopping Mall', type: 'shopping', lat: lat - 0.001, lng: lng + 0.003, distance: '300m', icon: FaShoppingCart },
+      { id: 5, name: 'Office Complex', type: 'office', lat: lat + 0.004, lng: lng - 0.001, distance: '600m', icon: FaBuilding },
+      { id: 6, name: 'Local Cafe', type: 'cafe', lat: lat - 0.002, lng: lng - 0.001, distance: '250m', icon: FaCoffee },
       { id: 7, name: 'Bus Stop', type: 'transport', lat: lat + 0.001, lng: lng + 0.001, distance: '100m', icon: MdDirectionsBus },
-      { id: 8, name: 'Grocery Store', type: 'shopping', lat: lat + 0.002, lng: lng + 0.002, distance: '320m', icon: BsCart3 },
+      { id: 8, name: 'Grocery Store', type: 'shopping', lat: lat + 0.002, lng: lng + 0.002, distance: '320m', icon: FaShoppingCart },
     ];
     return amenities;
   }, []);
 
   const handleBookmark = useCallback(() => {
-    setIsBookmarked(!isBookmarked);
-    // In real app, this would update Firebase/backend
-  }, [isBookmarked]);
+    if (!property) return;
+    if (isBookmarked) {
+      dispatch(removeFavorite(property));
+    } else {
+      dispatch(addFavorite(property));
+    }
+  }, [isBookmarked, property, dispatch]);
 
   const handleCalculate = useCallback(() => {
     if (property) {
@@ -112,8 +94,8 @@ const PropertyDetails = ({ id: propId, onClose }) => {
     return colors[type] || colors.default;
   };
 
-  const filteredAmenities = selectedAmenityType === 'all' 
-    ? nearbyAmenities 
+  const filteredAmenities = selectedAmenityType === 'all'
+    ? nearbyAmenities
     : nearbyAmenities.filter(amenity => amenity.type === selectedAmenityType);
 
   useEffect(() => {
@@ -123,39 +105,17 @@ const PropertyDetails = ({ id: propId, onClose }) => {
   }, [property, generateNearbyAmenities]);
 
   useEffect(() => {
-
-    const fetchProperty = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const docRef = doc(db, 'properties', actualId);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const fetchedProperty = { id: docSnap.id, ...docSnap.data() };
-          setProperty(fetchedProperty);
-        } else {
-          const localProperty = listingsData.find(p => p.id === actualId);
-          if (localProperty) {
-            setProperty(localProperty);
-          } else {
-            setError("Property not found.");
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching property details:", err);
-        setError("Failed to load property details.");
-        const localProperty = listingsData.find(p => p.id === actualId);
-        if (localProperty) {
-          setProperty(localProperty);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProperty();
-  }, [actualId]);
+    setLoading(true);
+    setError(null);
+    const foundProperty = allProperties.find(p => p.id === actualId);
+    if (foundProperty) {
+      setProperty(foundProperty);
+      setLoading(false);
+    } else {
+      setError("Property not found in Redux store.");
+      setLoading(false);
+    }
+  }, [actualId, allProperties]);
 
   if (loading) {
     return <div className="property-details-container">Loading property details...</div>;
@@ -177,16 +137,32 @@ const PropertyDetails = ({ id: propId, onClose }) => {
       {!isModal && (
         <div className="property-nav-header">
           <button className="back-button" onClick={handleBackClick}>
-            <BsArrowLeft /> Back to Listings
+            <FaArrowLeft /> Back to Listings
           </button>
           <div className="property-actions">
-            <button className="bookmark-button" onClick={handleBookmark}>
-              {isBookmarked ? <BsHeartFill /> : <BsHeart />}
-              {isBookmarked ? 'Bookmarked' : 'Bookmark'}
-            </button>
+          
             <button className="calculate-button" onClick={handleCalculate}>
-              <BsCalculator /> Calculate Mortgage
+              <FaCalculator /> Mortrage
             </button>
+            <button className="buy-button" onClick={() => setShowVirtualBuy(true)}>
+              <FaShoppingCart /> Virtual Buy
+            </button>
+            
+
+            <div className="share-buttons-compact">
+              <FacebookShareButton url={window.location.href} quote={property.title}>
+                <FacebookIcon size={24} round />
+              </FacebookShareButton>
+              <TwitterShareButton url={window.location.href} title={property.title}>
+                <TwitterIcon size={24} round />
+              </TwitterShareButton>
+              <WhatsappShareButton url={window.location.href} title={property.title}>
+                <WhatsappIcon size={24} round />
+              </WhatsappShareButton>
+              <EmailShareButton url={window.location.href} subject={`Check out this property: ${property.title}`} body={property.description}>
+                <EmailIcon size={24} round />
+              </EmailShareButton>
+            </div>
           </div>
         </div>
       )}
@@ -195,19 +171,44 @@ const PropertyDetails = ({ id: propId, onClose }) => {
       <div className="property-details-header">
         <h1>{property.title}</h1>
         <p className="property-location">
-          <BsGeoAlt /> {property.address || property.location}
+          <FaMapMarkerAlt /> {property.address || property.location}
         </p>
         <div className="property-price-badge">
           ₹{property.price.toLocaleString()}
         </div>
+        <button className="icon-button share-icon" onClick={() => setShowShareOptions(!showShareOptions)} title="Share Property">
+          <FaShareAlt />
+        </button>
+        {showShareOptions && (
+          <div className="share-options-dropdown">
+            <FacebookShareButton url={window.location.href} quote={property.title}>
+              <FacebookIcon size={32} round />
+            </FacebookShareButton>
+            <TwitterShareButton url={window.location.href} title={property.title}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+            <WhatsappShareButton url={window.location.href} title={property.title}>
+              <WhatsappIcon size={32} round />
+            </WhatsappShareButton>
+            <EmailShareButton url={window.location.href} subject={`Check out this property: ${property.title}`} body={property.description}>
+              <EmailIcon size={32} round />
+            </EmailShareButton>
+          </div>
+        )}
       </div>
 
       {/* Property Images */}
       <div className="property-image-gallery">
         {property.imageUrls && property.imageUrls.length > 0 ? (
-          property.imageUrls.map((url, index) => (
-            <img key={index} src={url} alt={`Property image ${index + 1}`} className="property-main-image" />
-          ))
+          <ImageGallery
+            items={property.imageUrls.map(url => ({ original: url, thumbnail: url }))}
+            showPlayButton={false}
+            showFullscreenButton={false}
+            showNav={true}
+            showBullets={true}
+            autoPlay={true}
+            thumbnailPosition="bottom"
+          />
         ) : (
           <div className="property-image-placeholder">
             <img src={property.imageUrl || 'https://via.placeholder.com/600x400?text=Property+Image'} alt={property.title} className="property-main-image" />
@@ -218,22 +219,22 @@ const PropertyDetails = ({ id: propId, onClose }) => {
       {/* Property Info Grid */}
       <div className="property-info-grid">
         <div className="property-info-item">
-          <strong>Price:</strong> ₹{property.price.toLocaleString()}
+          <strong><FaRupeeSign /> Price:</strong> ₹{property.price.toLocaleString()}
         </div>
         <div className="property-info-item">
-          <strong>Bedrooms:</strong> {property.bedrooms || 'N/A'}
+          <strong><FaHome /> Type:</strong> {property.type || 'N/A'}
         </div>
         <div className="property-info-item">
-          <strong>Bathrooms:</strong> {property.bathrooms || 'N/A'}
+          <strong><FaBed /> Bedrooms:</strong> {property.bedrooms || 'N/A'}
         </div>
         <div className="property-info-item">
-          <strong>Area:</strong> {property.area ? `${property.area} sqft` : 'N/A'}
+          <strong><FaBath /> Bathrooms:</strong> {property.bathrooms || 'N/A'}
         </div>
         <div className="property-info-item">
-          <strong>Type:</strong> {property.type || 'N/A'}
+          <strong><FaExpandArrowsAlt /> Area:</strong> {property.area ? `${property.area} sqft` : 'N/A'}
         </div>
         <div className="property-info-item">
-          <strong>Listed:</strong> {property.date || 'N/A'}
+          <strong><FaCalendarAlt /> Listed:</strong> {property.date || 'N/A'}
         </div>
       </div>
 
@@ -260,13 +261,19 @@ const PropertyDetails = ({ id: propId, onClose }) => {
         <div className="map-header">
           <h2>Location & Nearby</h2>
           <div className="map-controls">
-            <button 
+            <button
               className={`map-control-btn ${mapView === 'street' ? 'active' : ''}`}
               onClick={() => setMapView('street')}
             >
               Street View
             </button>
-            <button 
+            <button
+              className={`map-control-btn ${mapView === 'satellite' ? 'active' : ''}`}
+              onClick={() => setMapView('satellite')}
+            >
+              Satellite View
+            </button>
+            <button
               className={`map-control-btn ${showNearbyAmenities ? 'active' : ''}`}
               onClick={() => setShowNearbyAmenities(!showNearbyAmenities)}
             >
@@ -278,8 +285,8 @@ const PropertyDetails = ({ id: propId, onClose }) => {
         {/* Amenity Filter */}
         {showNearbyAmenities && (
           <div className="amenity-filters">
-            <select 
-              value={selectedAmenityType} 
+            <select
+              value={selectedAmenityType}
               onChange={(e) => setSelectedAmenityType(e.target.value)}
               className="amenity-filter-select"
             >
@@ -294,59 +301,17 @@ const PropertyDetails = ({ id: propId, onClose }) => {
         )}
 
         {/* Interactive Map */}
-        {mapLoaded && MapContainer ? (
-          <div className="map-container">
-            <MapContainer 
-              center={position} 
-              zoom={15} 
-              scrollWheelZoom={true} 
-              style={{ height: '500px', width: '100%', borderRadius: '10px' }}
-            >
-              <TileLayer
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              
-              {/* Property Marker */}
-              <Marker position={position}>
-                <Popup>
-                  <div className="custom-popup">
-                    <h3>{property.title}</h3>
-                    <p>{property.address}</p>
-                    <p><strong>₹{property.price.toLocaleString()}</strong></p>
-                    <p>{property.bedrooms} bed • {property.bathrooms} bath</p>
-                  </div>
-                </Popup>
-              </Marker>
-
-              {/* Nearby Amenities Markers */}
-              {showNearbyAmenities && filteredAmenities.map((amenity) => (
-                <CircleMarker
-                  key={amenity.id}
-                  center={[amenity.lat, amenity.lng]}
-                  radius={8}
-                  fillColor={getAmenityColor(amenity.type)}
-                  color={getAmenityColor(amenity.type)}
-                  weight={2}
-                  opacity={0.8}
-                  fillOpacity={0.8}
-                >
-                  <Popup>
-                    <div className="amenity-popup">
-                      <h4>{amenity.name}</h4>
-                      <p>Distance: {amenity.distance}</p>
-                      <p>Type: {amenity.type}</p>
-                    </div>
-                  </Popup>
-                </CircleMarker>
-              ))}
-            </MapContainer>
-          </div>
-        ) : (
-          <div className="map-placeholder">
-            <p>{mapLoaded ? 'Loading map...' : 'Map temporarily unavailable'}</p>
-          </div>
-        )}
+        <div className="map-container">
+          <Map
+            position={position}
+            popupText={property.title}
+            mapView={mapView}
+            activeAmenity={activeAmenity}
+            amenities={filteredAmenities} // Pass filtered amenities to Map component
+            getAmenityColor={getAmenityColor} // Pass amenity color function
+            pathToAmenity={pathToAmenity} // Pass path to amenity
+          />
+        </div>
       </div>
 
       {/* Nearby Amenities List */}
@@ -357,7 +322,14 @@ const PropertyDetails = ({ id: propId, onClose }) => {
             {filteredAmenities.map((amenity) => {
               const IconComponent = amenity.icon;
               return (
-                <div key={amenity.id} className="amenity-card">
+                <div
+                  key={amenity.id}
+                  className="amenity-card"
+                  onClick={() => {
+                    setActiveAmenity(amenity);
+                    setPathToAmenity([position, [amenity.lat, amenity.lng]]);
+                  }} // Set active amenity and path on click
+                >
                   <div className="amenity-icon" style={{ color: getAmenityColor(amenity.type) }}>
                     <IconComponent />
                   </div>
@@ -372,8 +344,65 @@ const PropertyDetails = ({ id: propId, onClose }) => {
           </div>
         </div>
       )}
+
+
+
+      {/* Neighborhood Insights */}
+      <div className="neighborhood-insights">
+        <h2>Neighborhood Insights</h2>
+        <div className="insights-grid">
+          <div className="insight-item">
+            <h3><FaBook className="insight-icon" /> School Ratings</h3>
+            <p>Overall: <span className="rating-score">8/10</span></p>
+            <p className="text-sm text-gray-600">Top-rated schools nearby include:</p>
+            <ul>
+              <li>Elementary: Oakwood Primary (9/10)</li>
+              <li>Middle: Central Middle (7/10)</li>
+              <li>High: City High (8/10)</li>
+            </ul>
+          </div>
+          <div className="insight-item">
+            <h3><FaWalking className="insight-icon" /> Walk Score & Transit</h3>
+            <p>Walk Score: <span className="rating-score">75</span> (Very Walkable)</p>
+            <p>Transit Score: <span className="rating-score">60</span> (Good Transit)</p>
+            <p className="text-sm text-gray-600">Easy access to public transportation and daily errands can be accomplished on foot.</p>
+          </div>
+          <div className="insight-item">
+            <h3><FaChartLine className="insight-icon" /> Local Market Trends</h3>
+            <p>Median Home Price: <span className="price-trend">₹5.5 Cr</span></p>
+            <p>Price Change (1yr): <span className="price-trend-positive">+5.2%</span></p>
+            <p className="text-sm text-gray-600">The neighborhood shows steady appreciation with strong buyer demand.</p>
+          </div>
+        </div>
+      </div>
+
+            {/* Agent Profile/Contact Card */}
+      <div className="agent-contact-card">
+        <div className="agent-info">
+          <img src="https://via.placeholder.com/100" alt="Agent" className="agent-avatar" />
+          <div className="agent-details">
+            <h3>Jane Doe <button className="icon-button call-agent-icon-inline" onClick={() => setShowContactModal(true)} title="Call for Inquiry"><FaPhone /></button></h3>
+            <p>Listing Agent</p>
+          </div>
+        </div>
+      </div>
+
+      {showVirtualBuy && (
+        <VirtualBuyingProcess
+          property={property}
+          onClose={() => setShowVirtualBuy(false)}
+        />
+      )}
+
+      {showContactModal && (
+        <ContactAgentModal
+          isOpen={showContactModal}
+          onClose={() => setShowContactModal(false)}
+          propertyTitle={property.title}
+        />
+      )}
     </div>
   );
-};
+}
 
 export default PropertyDetails;

@@ -34,6 +34,59 @@
   justify-content: center;
 }
 
+/* Compare button styles */
+.compare-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: #f3e8ff;
+  color: #7c3aed;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-out;
+}
+
+.compare-btn:hover {
+  background-color: #7c3aed;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(124, 58, 237, 0.2);
+}
+
+.compare-btn.compared {
+  background-color: #7c3aed;
+  color: white;
+}
+
+/* Virtual buy button styles */
+.virtual-buy-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background-color: #dcfce7;
+  color: #059669;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease-out;
+}
+
+.virtual-buy-btn:hover {
+  background-color: #059669;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(5, 150, 105, 0.2);
+}
+
 .dashboard-buttons {
   display: flex;
   flex-direction: column;
@@ -145,9 +198,6 @@
 }
 
 .bookmark-btn {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(4px);
   border: none;
@@ -160,8 +210,34 @@
   cursor: pointer;
   color: #187adc ;
   font-size: 20px;
- 
   transition: all 0.2s ease;
+}
+
+/* For horizontal layout */
+.card-actions-horizontal .bookmark-btn {
+  position: static;
+  padding: 8px 12px;
+  border-radius: 20px;
+  width: auto;
+  height: auto;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #fff4e6;
+  color: #ff7300;
+}
+
+.card-actions-horizontal .bookmark-btn:hover {
+  background-color: #ff7300;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 115, 0, 0.2);
+}
+
+.card-actions-horizontal .bookmark-btn.bookmarked {
+  background-color: #ff7300;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 115, 0, 0.3);
 }
 
 .bookmark-btn:hover {
@@ -208,9 +284,27 @@
 .card-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
   margin-top: 8px;
+  justify-content: flex-end;
+}
+
+.property-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.card-actions-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 8px 0;
 }
 
 .bookmark-inline {
@@ -361,7 +455,8 @@
   }
 
   .calculate-btn-text, 
-  .reminder-btn-text {
+  .reminder-btn-text,
+  .compare-btn-text {
     display: none;
   }
 
@@ -390,6 +485,22 @@
   .card-actions {
     gap: 8px;
     justify-content: flex-end;
+  }
+
+  .card-actions-horizontal {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .card-actions-horizontal .calculate-btn,
+  .card-actions-horizontal .compare-btn,
+  .card-actions-horizontal .virtual-buy-btn,
+  .card-actions-horizontal .bookmark-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 16px;
   }
 
   .date-bookmark-row {

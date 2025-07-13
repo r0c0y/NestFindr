@@ -6,7 +6,7 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     // Update state so the next render will show the fallback UI
     return { hasError: true };
   }
@@ -42,11 +42,11 @@ class ErrorBoundary extends React.Component {
                 Go Home
               </button>
             </div>
-            {process.env.NODE_ENV === 'development' && (
+            {(import.meta.env && import.meta.env.MODE === 'development') && (
               <details className="error-details">
                 <summary>Error Details (Development Only)</summary>
                 <pre>{this.state.error && this.state.error.toString()}</pre>
-                <pre>{this.state.errorInfo.componentStack}</pre>
+                <pre>{this.state.errorInfo && this.state.errorInfo.componentStack}</pre>
               </details>
             )}
           </div>

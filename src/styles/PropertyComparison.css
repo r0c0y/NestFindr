@@ -1,0 +1,343 @@
+/* Property Comparison Styles */
+.comparison-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.comparison-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  color: #475569;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.header-content {
+  text-align: center;
+}
+
+.header-content h1 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.header-content p {
+  margin: 0.5rem 0 0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.clear-btn {
+  padding: 0.75rem 1.5rem;
+  background: #ef4444;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Empty State */
+.comparison-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 2rem;
+}
+
+.empty-state {
+  text-align: center;
+  max-width: 500px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  color: #cbd5e1;
+  margin-bottom: 1rem;
+}
+
+.empty-state h2 {
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.empty-state p {
+  color: #64748b;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Comparison Grid */
+.comparison-grid-container {
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  padding-bottom: 1rem; /* For scrollbar */
+}
+
+.feature-labels-column {
+  flex: 0 0 220px; /* Fixed width for feature labels */
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 10;
+  padding-top: 180px; /* Space for property headers */
+}
+
+.feature-label-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  height: 70px; /* Match feature value height */
+}
+
+.feature-icon {
+  font-size: 1.2rem;
+  color: #3b82f6;
+}
+
+.properties-scroll-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.property-headers-row {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem 1.5rem 0.5rem;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.property-header {
+  flex: 0 0 280px; /* Fixed width for each property card */
+  position: relative;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.property-header:hover {
+  transform: translateY(-2px);
+}
+
+.remove-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: #ef4444;
+  border: none;
+  border-radius: 50%;
+  color: white;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.remove-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+.property-image {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.property-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.property-info h3 {
+  margin: 0 0 0.5rem;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-location {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+}
+
+.property-price {
+  color: #059669;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Comparison Features */
+.comparison-features {
+  padding: 0;
+}
+
+.feature-row {
+  display: flex;
+  gap: 1rem;
+  padding: 0 1.5rem;
+}
+
+.feature-value {
+  flex: 0 0 280px; /* Match property header width */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: transparent;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.95rem;
+  color: #475569;
+  transition: all 0.2s ease;
+  height: 70px; /* Fixed height */
+}
+
+.feature-value.highlight {
+  background: #dcfce7;
+  border-radius: 8px;
+  color: #166534;
+  font-weight: 600;
+}
+
+.best-value-icon {
+  color: #22c55e;
+  font-size: 1.1rem;
+}
+
+/* Comparison Actions */
+.comparison-actions-row {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.action-column {
+  /* Empty space for alignment */
+}
+
+.property-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  border: none;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #3b82f6;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .comparison-container {
+    padding: 1rem;
+  }
+
+  .comparison-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .header-content h1 {
+    font-size: 1.5rem;
+  }
+  
+  .comparison-grid-container {
+    /* On smaller screens, we can revert to a simpler layout if needed, */
+    /* but the horizontal scroll should still work. */
+  }
+}

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db, storage } from '../../firebase';
-import { updateProfile, signOut } from 'firebase/auth';
+import { db, storage } from '../../config/firebase';
+import { updateProfile } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNotification } from '../../context/NotificationContext';
 import ProfileForm from './ProfileForm';
 import Stats from './Stats';
 
 
 const Profile = () => {
-  const user = auth.currentUser;
+  const { user, logout } = useAuth();
+  const { addNotification } = useNotification();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState('');
   const [dob, setDob] = useState('');
@@ -18,8 +21,6 @@ const Profile = () => {
   const [profileImageUrl, setProfileImageUrl] = useState('');
   const [newImageFile, setNewImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [saveError, setSaveError] = useState('');
-  const [saveSuccess, setSaveSuccess] = useState('');
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
 
@@ -47,8 +48,6 @@ const Profile = () => {
 
   const handleSave = async () => {
     setLoading(true);
-    setSaveError('');
-    setSaveSuccess('');
     try {
       let finalImageUrl = profileImageUrl;
       // 1. Handle Image Upload if a new file is selected
@@ -98,13 +97,36 @@ const Profile = () => {
       await setDoc(userDocRef, userData, { merge: true });
       await updateProfile(user, { displayName: name, photoURL: finalImageUrl });
       setEditing(false);
-      setSaveSuccess("Profile updated! Refreshing...");
-      setTimeout(() => window.location.reload(), 1500);
+      setNewImageFile(null);
+      setProfileImageUrl(finalImageUrl);
+      setLoading(false);
+      addNotification({
+        type: 'success',
+        message: 'Profile updated successfully!'
+      });
     } catch (err) {
-      setSaveError("Failed to save profile. Please try again.");
+      addNotification({
+        type: 'error',
+        message: 'Failed to save profile. Please try again.'
+      });
       setLoading(false);
       setUploading(false);
       setUploadProgress(0);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      addNotification({
+        type: 'success',
+        message: 'Logged out successfully!'
+      });
+    } catch (err) {
+      addNotification({
+        type: 'error',
+        message: 'Failed to logout. Please try again.'
+      });
     }
   };
 
@@ -124,8 +146,6 @@ const Profile = () => {
           onImageChange={e => setNewImageFile(e.target.files[0])}
           onSave={handleSave}
           onCancel={() => setEditing(false)}
-          saveError={saveError}
-          saveSuccess={saveSuccess}
           uploading={uploading}
           uploadProgress={uploadProgress}
         />
@@ -158,7 +178,7 @@ const Profile = () => {
           </div>
         </div>
       )}
-      <button className="dashboard-logout-btn" onClick={() => signOut(auth)}>Logout</button>
+      <button className="dashboard-logout-btn" onClick={handleLogout}>Logout</button>
     </div>
   );
 };
