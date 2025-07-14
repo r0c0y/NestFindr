@@ -5,14 +5,33 @@ import Bookmarks from '../components/Dashboard/Bookmarks';
 import Preferences from '../components/Dashboard/Preferences';
 import Reminders from '../components/Dashboard/Reminders';
 import DashboardOverview from '../components/Dashboard/DashboardOverview'; // New component for overview
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const user = { uid: 'mockUserId', displayName: 'Guest User', email: 'guest@example.com' }; // Mock user for now
+  const { currentUser, loading, logout } = useAuth();
+
+  if (loading) {
+    return <div className="dashboard-loading">Loading dashboard...</div>; // Or a spinner component
+  }
+
+  if (!currentUser) {
+    return (
+      <div className="dashboard-guest-message">
+        <h2>Please log in or sign up to view your dashboard.</h2>
+        <p>Access personalized statistics, bookmarks, and more.</p>
+        <div className="dashboard-guest-actions">
+          <NavLink to="/login" className="dashboard-button">Login</NavLink>
+          <NavLink to="/signup" className="dashboard-button">Sign Up</NavLink>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-container">
-      <h2 className="dashboard-main-title">Welcome, {user.displayName || user.email}!</h2>
+      <h2 className="dashboard-main-title">Welcome, {currentUser.displayName || currentUser.email}!</h2>
+      <button onClick={logout} className="dashboard-logout-button">Logout</button>
       <nav className="dashboard-nav">
         <NavLink to="overview" className={({ isActive }) => isActive ? 'dashboard-nav-link active' : 'dashboard-nav-link'}>Overview</NavLink>
         <NavLink to="profile" className={({ isActive }) => isActive ? 'dashboard-nav-link active' : 'dashboard-nav-link'}>Profile</NavLink>

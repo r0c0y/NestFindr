@@ -1,10 +1,11 @@
-/* Property Comparison Styles */
+/* --- Base Container and Header --- */
 .comparison-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
   background: #f8fafc;
   min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
 }
 
 .comparison-header {
@@ -34,7 +35,6 @@
 
 .back-btn:hover {
   background: #cbd5e1;
-  transform: translateY(-1px);
 }
 
 .header-content {
@@ -67,20 +67,20 @@
 
 .clear-btn:hover {
   background: #dc2626;
-  transform: translateY(-1px);
 }
 
 /* Empty State */
 .comparison-empty {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 70vh;
   padding: 2rem;
+  text-align: center;
 }
 
 .empty-state {
-  text-align: center;
   max-width: 500px;
 }
 
@@ -102,35 +102,154 @@
   font-size: 1.1rem;
 }
 
-/* Comparison Grid */
-.comparison-grid-container {
-  display: flex;
+/* --- Core Table Layout --- */
+.comparison-table-container {
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  padding-bottom: 1rem; /* For scrollbar */
+  overflow-x: auto; /* Enables horizontal scrolling for the table */
 }
 
-.feature-labels-column {
-  flex: 0 0 220px; /* Fixed width for feature labels */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* Ensures columns have fixed widths */
+  min-width: 900px; /* Ensure table is wide enough to scroll */
+}
+
+.comparison-table thead,
+.comparison-table tfoot {
+  background-color: #f1f5f9;
+}
+
+.table-cell {
+  vertical-align: middle;
+  padding: 1rem;
+  border-right: 1px solid #e2e8f0; /* Add right border to cells */
+}
+
+.table-cell:last-child {
+  border-right: none; /* No right border for the last cell */
+}
+
+.table-row {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+/* --- Sticky Header & Column --- */
+.table-header-property-col,
+.table-header-feature-col {
   position: sticky;
-  left: 0;
-  background: white;
   z-index: 10;
-  padding-top: 180px; /* Space for property headers */
+  position: sticky;
 }
 
-.feature-label-item {
+.table-header-property-col {
+  top: 0;
+}
+
+.table-header-feature-col,
+.feature-label-cell {
+  left: 0;
+  z-index: 20; /* Higher z-index to ensure it stays on top of scrolling columns */
+  border-right: 1px solid #e2e8f0;
+  position: sticky;
+}
+
+.table-header-feature-col {
+  background-color: #f1f5f9; /* Match thead background */
+}
+
+.feature-label-cell {
+  background-color: white; /* Body rows need white background */
+}
+
+.comparison-table tfoot .feature-label-cell {
+  background-color: #f1f5f9; /* Footer needs gray background */
+}
+
+/* --- Header Content --- */
+.table-header-feature-col {
+  font-weight: 600;
+  width: 220px;
+  text-align: left;
+}
+
+.table-header-property-col {
+  width: 280px;
+  text-align: center; /* Center content in property header columns */
+}
+
+.property-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.property-image-wrapper {
+  width: 100%;
+  height: 150px; /* Increased size */
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 auto 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.property-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.property-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.property-price {
+  color: #059669;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 12;
+  transition: background 0.2s ease;
+}
+
+.remove-btn:hover {
+  background: #dc2626;
+}
+
+/* --- Table Body Content --- */
+.feature-label-cell {
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.5rem;
-  font-weight: 600;
-  color: #1e293b;
-  font-size: 1rem;
-  border-bottom: 1px solid #e2e8f0;
-  height: 70px; /* Match feature value height */
+  color: #475569;
 }
 
 .feature-icon {
@@ -138,189 +257,84 @@
   color: #3b82f6;
 }
 
-.properties-scroll-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.property-headers-row {
-  display: flex;
-  gap: 1rem;
-  padding: 1.5rem 1.5rem 0.5rem;
-  background: white;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-
-.property-header {
-  flex: 0 0 280px; /* Fixed width for each property card */
-  position: relative;
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
-  margin-bottom: 1rem;
-}
-
-.property-header:hover {
-  transform: translateY(-2px);
-}
-
-.remove-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: #ef4444;
-  border: none;
-  border-radius: 50%;
-  color: white;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 10;
-}
-
-.remove-btn:hover {
-  background: #dc2626;
-  transform: scale(1.1);
-}
-
-.property-image {
-  width: 100%;
-  height: 120px;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 1rem;
-}
-
-.property-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.property-info h3 {
-  margin: 0 0 0.5rem;
-  color: #1e293b;
-  font-size: 1.1rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.property-location {
-  color: #64748b;
-  font-size: 0.9rem;
-  margin: 0 0 0.5rem;
-}
-
-.property-price {
-  color: #059669;
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-/* Comparison Features */
-.comparison-features {
-  padding: 0;
-}
-
-.feature-row {
-  display: flex;
-  gap: 1rem;
-  padding: 0 1.5rem;
-}
-
-.feature-value {
-  flex: 0 0 280px; /* Match property header width */
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1.5rem;
-  background: transparent;
-  border-bottom: 1px solid #e2e8f0;
+.property-value-cell {
+  text-align: center;
   font-size: 0.95rem;
   color: #475569;
-  transition: all 0.2s ease;
-  height: 70px; /* Fixed height */
 }
 
-.feature-value.highlight {
+.property-value-cell.highlight {
   background: #dcfce7;
-  border-radius: 8px;
   color: #166534;
   font-weight: 600;
+  box-shadow: inset 0 0 5px rgba(34, 197, 94, 0.3); /* Subtle glow */
 }
 
 .best-value-icon {
   color: #22c55e;
   font-size: 1.1rem;
+  margin-right: 0.5rem;
 }
 
-/* Comparison Actions */
-.comparison-actions-row {
-  display: flex;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: #f8fafc;
-  border-top: 1px solid #e2e8f0;
+/* --- Action Buttons in Footer Row --- */
+/* --- Action Buttons in Footer Row (Corrected) --- */
+.comparison-table tfoot .table-row {
+  border-top: 2px solid #e9ecef;
 }
 
-.action-column {
-  /* Empty space for alignment */
+/* The table cell (TD) is now simple. It no longer uses flexbox. */
+.property-action-cell {
+  padding: 1rem;
+  vertical-align: middle;
 }
 
-.property-actions {
+/* The wrapper DIV inside the cell handles all the layout. This is the fix. */
+.action-buttons-wrapper {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-primary,
-.btn-secondary {
+/* Select the buttons INSIDE the wrapper div */
+.action-buttons-wrapper .btn-primary,
+.action-buttons-wrapper .btn-secondary {
   width: 100%;
-  padding: 0.75rem 1.5rem;
+  max-width: 180px;
+  font-size: 0.95rem;
+  padding: 0.8rem 1rem;
+  text-align: center;
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
-.btn-primary {
-  background: #3b82f6;
+.action-buttons-wrapper .btn-primary {
+  background: #007bff;
   border: none;
   color: white;
 }
 
-.btn-primary:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
+.action-buttons-wrapper .btn-primary:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
 }
 
-.btn-secondary {
+.action-buttons-wrapper .btn-secondary {
   background: transparent;
-  border: 2px solid #3b82f6;
-  color: #3b82f6;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
+  border: 2px solid #007bff;
+  color: #007bff;
 }
 
-.btn-secondary:hover {
-  background: #3b82f6;
+.action-buttons-wrapper .btn-secondary:hover {
+  background: #007bff;
   color: white;
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-/* Responsive Design */
+/* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
   .comparison-container {
     padding: 1rem;
@@ -335,9 +349,94 @@
   .header-content h1 {
     font-size: 1.5rem;
   }
-  
-  .comparison-grid-container {
-    /* On smaller screens, we can revert to a simpler layout if needed, */
-    /* but the horizontal scroll should still work. */
+
+  .table-header-feature-col {
+    width: 150px;
+    padding: 1rem;
   }
+
+  .table-header-property-col {
+    width: 200px;
+    padding: 0.5rem;
+  }
+
+  .property-image-wrapper {
+    height: 80px;
+  }
+
+  .property-info h3 {
+    font-size: 1rem;
+  }
+
+  .property-price {
+    font-size: 0.9rem;
+  }
+
+  .table-cell {
+    padding: 0.8rem;
+  }
+
+  .feature-label-cell {
+    padding: 0.8rem;
+  }
+
+  .property-action-cell .btn-primary,
+  .property-action-cell .btn-secondary {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* Mortgage Row Styling */
+.mortgage-row .feature-label-cell {
+  background-color: #e0f7fa; /* Light blue background for the label */
+  color: #00796b; /* Darker text color */
+  font-weight: 600;
+}
+
+.mortgage-row .feature-icon {
+  color: #00bcd4; /* Cyan icon color */
+}
+
+.mortgage-value-cell {
+  background-color: #f0fdfa; /* Very light green background for values */
+  font-weight: 600;
+  color: #004d40; /* Dark green text color */
+}
+
+.mortgage-result-text {
+  color: #00796b; /* Match label color */
+  font-size: 1.05rem;
+}
+
+.no-mortgage-text {
+  color: #9e9e9e; /* Grey for N/A */
+  font-style: italic;
+}
+
+/* Mortgage Options Checkbox */
+.mortgage-options {
+  margin-top: 20px;
+  padding: 15px 20px;
+  background-color: #e3f2fd; /* Light blue background */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.mortgage-options label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #212121;
+}
+
+.mortgage-options input[type="checkbox"] {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  accent-color: #1976d2; /* Blue accent color for checkbox */
 }

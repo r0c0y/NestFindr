@@ -12,6 +12,8 @@ import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import '../styles/PropertyDetails.css';
 import ContactAgentModal from '../components/ContactAgentModal'; // Add this import
+import Modal from '../components/Modal/Modal'; // Import the new Modal component
+import SimplifiedMortgageCalculatorModal from '../components/SimplifiedMortgageCalculatorModal/SimplifiedMortgageCalculatorModal'; // Import the new SimplifiedMortgageCalculatorModal
 
 const PropertyDetails = ({ id: propId, onClose }) => {
   const { id } = useParams();
@@ -32,6 +34,7 @@ const PropertyDetails = ({ id: propId, onClose }) => {
   const [activeAmenity, setActiveAmenity] = useState(null); // New state for active amenity
   const [pathToAmenity, setPathToAmenity] = useState(null); // New state for path
   const [showContactModal, setShowContactModal] = useState(false); // Add this state
+  const [showMortgageModal, setShowMortgageModal] = useState(false); // New state for mortgage calculator modal
   const [selectedAmenityType, setSelectedAmenityType] = useState('all'); // Add this state
   const [showShareOptions, setShowShareOptions] = useState(false); // New state for sharing options
 
@@ -62,17 +65,8 @@ const PropertyDetails = ({ id: propId, onClose }) => {
   }, [isBookmarked, property, dispatch]);
 
   const handleCalculate = useCallback(() => {
-    if (property) {
-      if (isModal && onClose) {
-        onClose(); // Close modal first
-        setTimeout(() => {
-          navigate(`/calculator?price=${property.price}&property=${encodeURIComponent(property.title)}`);
-        }, 100);
-      } else {
-        navigate(`/calculator?price=${property.price}&property=${encodeURIComponent(property.title)}`);
-      }
-    }
-  }, [property, navigate, isModal, onClose]);
+    setShowMortgageModal(true);
+  }, []);
 
   const handleBackClick = useCallback(() => {
     if (isModal && onClose) {
@@ -147,8 +141,6 @@ const PropertyDetails = ({ id: propId, onClose }) => {
             <button className="buy-button" onClick={() => setShowVirtualBuy(true)}>
               <FaShoppingCart /> Virtual Buy
             </button>
-            
-
             <div className="share-buttons-compact">
               <FacebookShareButton url={window.location.href} quote={property.title}>
                 <FacebookIcon size={24} round />
@@ -399,6 +391,20 @@ const PropertyDetails = ({ id: propId, onClose }) => {
           isOpen={showContactModal}
           onClose={() => setShowContactModal(false)}
           propertyTitle={property.title}
+        />
+      )}
+
+      {/* Simplified Mortgage Calculator Modal */}
+      {showMortgageModal && property && (
+        <SimplifiedMortgageCalculatorModal
+          isOpen={showMortgageModal}
+          onClose={() => setShowMortgageModal(false)}
+          propertyPrice={property.price}
+          propertyTitle={property.title}
+          onCalculate={(monthlyPayment) => {
+            // You can add a notification here if needed
+            console.log(`Calculated monthly payment: ${monthlyPayment}`);
+          }}
         />
       )}
     </div>

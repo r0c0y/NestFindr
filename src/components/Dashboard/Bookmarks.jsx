@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropertyCard from '../PropertyCard';
 import { removeFavorite } from '../../store/favoritesSlice';
 import { FaRegBookmark } from 'react-icons/fa';
+import '../../styles/Bookmarks.css';
 
 const Bookmarks = () => {
   const dispatch = useDispatch();

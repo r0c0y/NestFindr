@@ -23,21 +23,25 @@ const ProfileForm = ({
   const fileInputRef = useRef();
 
   return (
-    <div className="dashboard-edit-fields-vertical">
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <div className="profile-form-container">
+      <h3>Edit Profile</h3>
+      <div className="profile-image-upload-section">
         <label
           htmlFor="profile-image-upload"
+          className="profile-image-upload-label"
           style={{ cursor: uploading ? 'not-allowed' : 'pointer', opacity: uploading ? 0.6 : 1 }}
           onClick={e => {
             if (uploading) e.preventDefault();
             else fileInputRef.current && fileInputRef.current.click();
           }}
         >
-          <span className="dashboard-avatar" style={{ width: 60, height: 60, fontSize: 24 }}>
-            {profileImageUrl
-              ? <img src={profileImageUrl} alt="avatar" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
-              : (name ? name[0].toUpperCase() : '?')}
-          </span>
+          {profileImageUrl ? (
+            <img src={profileImageUrl} alt="avatar" className="profile-image-preview" />
+          ) : (
+            <span className="profile-image-preview dashboard-avatar">
+              {(name ? name[0].toUpperCase() : '?')}
+            </span>
+          )}
           <input
             ref={fileInputRef}
             id="profile-image-upload"
@@ -47,48 +51,48 @@ const ProfileForm = ({
             onChange={onImageChange}
             disabled={uploading}
           />
+          <span>{profileImageUrl ? 'Change Image' : 'Upload Image'}</span>
         </label>
-        <span style={{ fontSize: 13, color: '#888' }}>Upload Profile Image</span>
-      </div>
-      {uploading && (
-        <div style={{ width: 120, margin: '8px 0' }}>
-          <div style={{
-            width: '100%',
-            height: 8,
-            background: '#eee',
-            borderRadius: 4,
-            overflow: 'hidden'
-          }}>
-            <div style={{
-              width: `${uploadProgress}%`,
-              height: '100%',
-              background: '#ff7300',
-              transition: 'width 0.2s'
-            }} />
+        {uploading && (
+          <div className="upload-progress-bar-container">
+            <div className="upload-progress-bar" style={{ width: `${uploadProgress}%` }}></div>
+            <div className="upload-progress-text">Uploading: {uploadProgress}%</div>
           </div>
-          <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>
-            Uploading: {uploadProgress}%
-          </div>
-        </div>
-      )}
-      <input value={name} onChange={e => setName(e.target.value)} className="dashboard-input" placeholder="Name" />
-      <input type="date" value={dob} onChange={e => setDob(e.target.value)} className="dashboard-input" placeholder="DOB" />
-      <input value={address} onChange={e => setAddress(e.target.value)} className="dashboard-input" placeholder="Address" />
-      <input value={mobile} onChange={e => setMobile(e.target.value)} className="dashboard-input" placeholder="Mobile Number" />
-      <textarea
-        value={bio}
-        onChange={e => setBio(e.target.value)}
-        className="dashboard-input"
-        placeholder="Describe yourself, your persona and ideas"
-        rows={3}
-        style={{ resize: 'vertical' }}
-      />
-      <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
-        <button className="dashboard-btn" onClick={onSave} disabled={uploading}>Save</button>
-        <button className="dashboard-btn dashboard-btn-cancel" onClick={onCancel} disabled={uploading}>Cancel</button>
+        )}
       </div>
-      {saveError && <div className="dashboard-error">{saveError}</div>}
-      {saveSuccess && <div className="dashboard-success dashboard-success-fade">{saveSuccess}</div>}
+
+      <div className="profile-form-group">
+        <label>Full Name</label>
+        <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Full Name" />
+      </div>
+      <div className="profile-form-group">
+        <label>Date of Birth</label>
+        <input type="date" value={dob} onChange={e => setDob(e.target.value)} placeholder="DOB" />
+      </div>
+      <div className="profile-form-group">
+        <label>Address</label>
+        <input type="text" value={address} onChange={e => setAddress(e.target.value)} placeholder="Address" />
+      </div>
+      <div className="profile-form-group">
+        <label>Mobile Number</label>
+        <input type="tel" value={mobile} onChange={e => setMobile(e.target.value)} placeholder="Mobile Number" />
+      </div>
+      <div className="profile-form-group">
+        <label>Bio</label>
+        <textarea
+          value={bio}
+          onChange={e => setBio(e.target.value)}
+          placeholder="Describe yourself, your persona and ideas"
+          rows={3}
+        />
+      </div>
+
+      <div className="profile-form-actions">
+        <button onClick={onSave} disabled={uploading} className="save-btn">Save</button>
+        <button onClick={onCancel} disabled={uploading} className="cancel-btn">Cancel</button>
+      </div>
+      {saveError && <div className="auth-error">{saveError}</div>}
+      {saveSuccess && <div className="auth-success">{saveSuccess}</div>}
     </div>
   );
 };

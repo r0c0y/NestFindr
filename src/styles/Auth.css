@@ -103,3 +103,50 @@
 .auth-link a:hover {
   text-decoration: underline;
 }
+
+.auth-social-login {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 15px;
+  border-radius: 7px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  border: 1px solid #ddd;
+}
+
+.social-btn svg {
+  font-size: 1.2rem;
+}
+
+.google-btn {
+  background-color: #db4437;
+  color: white;
+}
+
+.google-btn:hover {
+  background-color: #c23321;
+  box-shadow: 0 2px 8px rgba(219, 68, 55, 0.3);
+}
+
+.github-btn {
+  background-color: #333;
+  color: white;
+}
+
+.github-btn:hover {
+  background-color: #000;
+  box-shadow: 0 2px 8px rgba(51, 51, 51, 0.3);
+}

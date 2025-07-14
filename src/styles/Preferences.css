@@ -1,24 +1,24 @@
 /* Enhanced Preferences Styles */
 .preferences-container {
-  padding: 32px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   max-width: 800px;
   margin: 0 auto;
 }
 
 .preferences-header {
   text-align: center;
-  margin-bottom: 40px;
-  padding-bottom: 24px;
-  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e0e0e0;
 }
 
 .preferences-header h2 {
-  font-size: 2.5em;
-  color: #1e293b;
-  margin-bottom: 12px;
+  font-size: 2.2rem;
+  color: #2c3e50;
+  margin-bottom: 0.8rem;
   font-weight: 700;
   background: linear-gradient(135deg, #ff7300, #ff9500);
   background-clip: text;
@@ -28,29 +28,29 @@
 }
 
 .preferences-header p {
-  color: #64748b;
-  font-size: 1.1em;
+  color: #6c757d;
+  font-size: 1rem;
   font-weight: 500;
 }
 
 .preferences-sections {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 2rem;
 }
 
 .preference-section {
   background: white;
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  padding: 1.8rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   border: 1px solid #e2e8f0;
   transition: all 0.3s ease;
 }
 
 .preference-section:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .section-header {
@@ -84,82 +84,103 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px;
+  padding: 1rem;
   background: #f8fafc;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
   transition: all 0.3s ease;
 }
 
 .preference-item:hover {
   background: #f1f5f9;
   border-color: #ff7300;
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 .preference-info {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 1rem;
   flex: 1;
 }
 
 .preference-icon {
-  font-size: 1.2em;
-  color: #64748b;
-  min-width: 20px;
+  font-size: 1.3em;
+  color: #6c757d;
+  min-width: 24px;
 }
 
 .preference-info strong {
-  font-size: 1.1em;
-  color: #1e293b;
+  font-size: 1.05em;
+  color: #2c3e50;
   font-weight: 600;
   margin-bottom: 4px;
   display: block;
 }
 
 .preference-info p {
-  color: #64748b;
-  font-size: 0.9em;
+  color: #7f8c8d;
+  font-size: 0.85em;
   margin: 0;
   line-height: 1.4;
 }
 
 .preference-toggle {
-  background: none;
+  background: #e0e0e0;
   border: none;
-  font-size: 1.8em;
+  border-radius: 20px;
+  width: 50px;
+  height: 28px;
+  position: relative;
   cursor: pointer;
-  color: #cbd5e1;
-  transition: all 0.3s ease;
-  padding: 4px;
-  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.preference-toggle::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: white;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .preference-toggle.enabled {
-  color: #ff7300;
+  background-color: #ff7300;
+}
+
+.preference-toggle.enabled::before {
+  transform: translateX(22px);
 }
 
 .preference-toggle:hover {
-  background: rgba(255, 115, 0, 0.1);
-  transform: scale(1.1);
+  background: none; /* Remove background change on hover for toggle itself */
+  transform: none; /* Remove transform on hover for toggle itself */
+}
+
+.preference-toggle.enabled:hover {
+  background-color: #e65100; /* Darker orange on hover when enabled */
 }
 
 .preference-select {
-  padding: 10px 16px;
-  border: 2px solid #e2e8f0;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid #dcdcdc;
   border-radius: 8px;
-  font-size: 1em;
+  font-size: 1rem;
   background-color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 150px;
+  min-width: 160px;
 }
 
 .preference-select:focus {
   outline: none;
   border-color: #ff7300;
-  box-shadow: 0 0 0 3px rgba(255, 115, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(255, 115, 0, 0.2);
 }
 
 .preference-select:hover {

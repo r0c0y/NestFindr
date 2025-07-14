@@ -1,0 +1,9 @@
+.main-content-padding {
+  padding-top: 64px; /* Default padding for desktop navbar height */
+}
+
+@media (max-width: 700px) {
+  .main-content-padding {
+    padding-top: 56px; /* Adjusted padding for mobile navbar height */
+  }
+}

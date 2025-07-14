@@ -1,105 +1,73 @@
 /* About Page Styles */
 .about-container {
   min-height: 100vh;
-  background-color: #fdfdfd; /* Lighter background, similar to home */
+  background-color: #fdfdfd;
   font-family: 'Segoe UI', sans-serif;
 }
 
 /* Hero Section */
-.about-hero {
+.about-hero-section {
   display: flex;
+  flex-wrap: wrap; 
   align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 120px 2rem 80px;
-  gap: 4rem;
+  justify-content: center; /* Center content when wrapped */
+  padding: 120px ;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  min-height: 80vh;
+  gap: 10rem; /* Add gap between content and image */
 }
 
-.hero-content {
-  flex: 1;
-  max-width: 500px;
+.hero-content-container {
+  max-width: 550px;
+  flex: 1 1 45%; /* Allow content to grow/shrink, with a base of 45% */
+  min-width: 280px; /* Ensure it doesn't get too small */
 }
 
-.hero-content h1 {
-  font-size: 3.5rem;
+.hero-title {
+  font-size: 4rem;
   font-weight: 800;
-  color: #1e293b;
-  margin-bottom: 1.5rem;
   line-height: 1.1;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
 }
 
-.hero-content p {
-  font-size: 1.5rem;
-  color: #2c3e50;
-  margin-bottom: 2rem;
-  line-height: 1.4;
-  font-weight: 600;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.8));
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 115, 0, 0.3);
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: #4a5568;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
 }
 
-.hero-image {
-  flex: 1;
-  max-width: 600px;
-}
-
-.hero-image img {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-}
-
-/* Stats Section */
-.stats-section {
-  background: white;
-  padding: 80px 2rem;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.stat-card {
-  text-align: center;
-  padding: 2rem;
-  background-color: #FF7043; /* Primary orange */
+.hero-cta-button {
+  background: #2563eb;
   color: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-}
-
-.stat-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #fff;
-}
-
-.stat-card h3 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-
-.stat-card p {
   font-size: 1.1rem;
-  opacity: 0.9;
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.hero-cta-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+}
+
+.hero-image-container {
+  max-width: 600px;
+  flex: 1 1 45%; /* Allow image to grow/shrink, with a base of 45% */
+  min-width: 280px; /* Ensure it doesn't get too small */
+}
+
+.hero-image-container img {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 /* Values Section */
@@ -153,7 +121,7 @@
 
 .value-icon {
   font-size: 3rem;
-  color: #FF7043; /* Primary orange */
+  color: #FF7043;
   margin-bottom: 1.5rem;
 }
 
@@ -209,7 +177,7 @@
 
 .feature-icon {
   font-size: 2.5rem;
-  color: #FF7043; /* Primary orange */
+  color: #FF7043;
   margin-bottom: 1.5rem;
 }
 
@@ -283,7 +251,7 @@
 
 .team-role {
   font-size: 1.1rem;
-  color: #FF7043; /* Primary orange */
+  color: #FF7043;
   font-weight: 500;
   margin-bottom: 1rem;
 }
@@ -362,8 +330,8 @@
 
 /* CTA Section */
 .cta-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, #000000 0%, #1f2e76 100%);
+  color: rgb(227, 174, 104);
   padding: 80px 2rem;
   text-align: center;
 }
@@ -372,6 +340,7 @@
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1rem;
+  color: white;
 }
 
 .cta-section p {
@@ -390,61 +359,79 @@
   flex-wrap: wrap;
 }
 
-.btn-primary,
-.btn-secondary {
-  padding: 1rem 2rem;
-  border-radius: 50px;
+.btn-primary-about,
+.btn-secondary-about {
+  border-radius: 30px;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: none;
+  border: 2px solid transparent;
+  padding: 12px 30px;
   min-width: 180px;
+  text-align: center;
 }
 
-.btn-primary {
-  background: #ff7300;
+.btn-primary-about {
+  background: #ff6600;
   color: white;
+  border-color: #ff6600;
 }
 
-.btn-primary:hover {
-  background: #e65a00;
+.btn-primary-about:hover {
+  background: #e65c00;
+  border-color: #e65c00;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.btn-secondary {
+.btn-primary-about:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-secondary-about {
   background: transparent;
   color: white;
-  border: 2px solid white;
+  border-color: white;
 }
 
-.btn-secondary:hover {
+.btn-secondary-about:hover {
   background: white;
-  color: #667eea;
+  color: #1f2e76;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary-about:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .about-hero {
+@media (max-width: 1024px) {
+  .about-hero-section {
     flex-direction: column;
     text-align: center;
-    padding: 100px 1rem 60px;
   }
 
-  .hero-content h1 {
-    font-size: 2.5rem;
+  .hero-content-container,
+  .hero-image-container {
+    max-width: 90%; /* Ensure they don't overflow when stacked */
+    margin-left: auto; /* Center them */
+    margin-right: auto; /* Center them */
   }
 
-  .hero-content p {
-    font-size: 1.2rem;
+  .hero-content-container {
+    margin-bottom: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
   }
 
-  .hero-image {
-    max-width: 100%;
-  }
-
-  .stats-grid,
   .values-grid,
   .features-grid,
   .team-grid,
@@ -460,17 +447,13 @@
     font-size: 2rem;
   }
 
-  .stat-card h3 {
-    font-size: 2rem;
-  }
-
   .cta-buttons {
     flex-direction: column;
     align-items: center;
   }
 
-  .btn-primary,
-  .btn-secondary {
+  .btn-primary-about,
+  .btn-secondary-about {
     width: 100%;
     max-width: 300px;
   }

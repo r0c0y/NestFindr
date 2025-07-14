@@ -3,6 +3,8 @@ import { auth, db } from '../config/firebase';
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 import '../styles/Auth.css';
 
 const Signup = () => {
@@ -20,6 +22,7 @@ const Signup = () => {
   const [success, setSuccess] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { signup, signInWithGoogle, signInWithGithub } = useAuth();
 
   // Calculate max DOB for 13+ (2012-12-31 if this year is 2025)
   const maxDob = (() => {
@@ -66,25 +69,7 @@ const Signup = () => {
       return;
     }
     try {
-      const userCred = await createUserWithEmailAndPassword(auth, form.email, form.password);
-
-      // --- ADDED: Update Firebase Auth profile with full name ---
-      await updateProfile(userCred.user, {
-        displayName: form.fullName
-      });
-
-      // --- ADDED: Save user data to Firestore ---
-      const userDocRef = doc(db, "users", userCred.user.uid);
-      await setDoc(userDocRef, {
-        displayName: form.fullName,
-        email: form.email,
-        address: form.address,
-        dob: form.dob,
-        referral: form.referral === 'Other' ? form.referralOther : form.referral,
-        createdAt: new Date()
-      });
-
-      await sendEmailVerification(userCred.user);
+      await signup(form.email, form.password, form.fullName, { address: form.address, dob: form.dob, referral: form.referral === 'Other' ? form.referralOther : form.referral });
       setSuccess('Signup successful! Please verify your email. Redirecting to login...');
       setTimeout(() => {
         navigate('/login');
@@ -94,6 +79,28 @@ const Signup = () => {
       console.error("Signup error:", err);
     }
     setSubmitting(false);
+  };
+
+  const handleGoogleSignup = async () => {
+    setError('');
+    try {
+      await signInWithGoogle();
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+      console.error("Google signup error:", err);
+    }
+  };
+
+  const handleGithubSignup = async () => {
+    setError('');
+    try {
+      await signInWithGithub();
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+      console.error("GitHub signup error:", err);
+    }
   };
 
   return (
@@ -183,6 +190,14 @@ const Signup = () => {
         {error && <div className="auth-error">{error}</div>}
         {success && <div className="auth-success">{success}</div>}
       </form>
+      <div className="auth-social-login">
+        <button onClick={handleGoogleSignup} className="social-btn google-btn">
+          <FaGoogle /> Sign up with Google
+        </button>
+        <button onClick={handleGithubSignup} className="social-btn github-btn">
+          <FaGithub /> Sign up with GitHub
+        </button>
+      </div>
       <div className="auth-link">
         Already have an account? <a href="/login">Login</a>
       </div>

@@ -7,11 +7,12 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useNotification } from '../../context/NotificationContext';
 import ProfileForm from './ProfileForm';
 import Stats from './Stats';
+import '../../styles/Profile.css';
 
 
 const Profile = () => {
-  const { user, logout } = useAuth();
-  const { addNotification } = useNotification();
+  const { currentUser, userProfile, logout } = useAuth();
+  const { showNotification } = useNotification();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState('');
   const [dob, setDob] = useState('');
@@ -25,26 +26,40 @@ const Profile = () => {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    if (currentUser) {
       setLoading(true);
-      const userDocRef = doc(db, 'users', user.uid);
-      getDoc(userDocRef).then(docSnap => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setName(data.displayName || user.displayName);
-          setDob(data.dob || '');
-          setAddress(data.address || '');
-          setMobile(data.mobile || '');
-          setBio(data.bio || '');
-          setProfileImageUrl(data.profileImageUrl || user.photoURL || '');
-        } else {
-          setName(user.displayName || '');
-          setProfileImageUrl(user.photoURL || '');
-        }
+      // Use userProfile if available, otherwise fetch from Firestore
+      if (userProfile) {
+        setName(userProfile.displayName || currentUser.displayName);
+        setDob(userProfile.dob || '');
+        setAddress(userProfile.address || '');
+        setMobile(userProfile.mobile || '');
+        setBio(userProfile.bio || '');
+        setProfileImageUrl(userProfile.profileImageUrl || currentUser.photoURL || '');
         setLoading(false);
-      });
+      } else {
+        // Fallback to fetching from Firestore if userProfile is not yet loaded in context
+        const userDocRef = doc(db, 'users', currentUser.uid);
+        getDoc(userDocRef).then(docSnap => {
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setName(data.displayName || currentUser.displayName);
+            setDob(data.dob || '');
+            setAddress(data.address || '');
+            setMobile(data.mobile || '');
+            setBio(data.bio || '');
+            setProfileImageUrl(data.profileImageUrl || currentUser.photoURL || '');
+          } else {
+            setName(currentUser.displayName || '');
+            setProfileImageUrl(currentUser.photoURL || '');
+          }
+          setLoading(false);
+        });
+      }
+    } else {
+      setLoading(false);
     }
-  }, [user]);
+  }, [currentUser, userProfile]);
 
   const handleSave = async () => {
     setLoading(true);
@@ -60,7 +75,7 @@ const Profile = () => {
           await deleteObject(oldImageRef).catch(() => {});
         }
         // B. Upload the new image with progress
-        const newImageRef = ref(storage, `profileImages/${user.uid}`);
+        const newImageRef = ref(storage, `profileImages/${currentUser.uid}`);
         const uploadTask = uploadBytesResumable(newImageRef, newImageFile);
         await new Promise((resolve, reject) => {
           uploadTask.on(
@@ -85,7 +100,7 @@ const Profile = () => {
       }
       const userData = {
         displayName: name,
-        email: user.email,
+        email: currentUser.email,
         dob,
         address,
         mobile,
@@ -93,40 +108,19 @@ const Profile = () => {
         profileImageUrl: finalImageUrl,
         lastUpdated: new Date()
       };
-      const userDocRef = doc(db, 'users', user.uid);
+      const userDocRef = doc(db, 'users', currentUser.uid);
       await setDoc(userDocRef, userData, { merge: true });
-      await updateProfile(user, { displayName: name, photoURL: finalImageUrl });
+      await updateProfile(currentUser, { displayName: name, photoURL: finalImageUrl });
       setEditing(false);
       setNewImageFile(null);
       setProfileImageUrl(finalImageUrl);
       setLoading(false);
-      addNotification({
-        type: 'success',
-        message: 'Profile updated successfully!'
-      });
+      showNotification('Profile updated successfully!', 'success');
     } catch (err) {
-      addNotification({
-        type: 'error',
-        message: 'Failed to save profile. Please try again.'
-      });
+      showNotification('Failed to save profile. Please try again.', 'error');
       setLoading(false);
       setUploading(false);
       setUploadProgress(0);
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      addNotification({
-        type: 'success',
-        message: 'Logged out successfully!'
-      });
-    } catch (err) {
-      addNotification({
-        type: 'error',
-        message: 'Failed to logout. Please try again.'
-      });
     }
   };
 
@@ -158,7 +152,7 @@ const Profile = () => {
               </span>
               <div className="profile-header-info">
                 <h3 className="dashboard-name">{name}</h3>
-                <p className="dashboard-email">{user.email}</p>
+                <p className="dashboard-email">{currentUser.email}</p>
               </div>
               <button className="dashboard-btn" onClick={() => setEditing(true)}>Edit</button>
             </div>
@@ -178,7 +172,7 @@ const Profile = () => {
           </div>
         </div>
       )}
-      <button className="dashboard-logout-btn" onClick={handleLogout}>Logout</button>
+      <button className="dashboard-logout-btn" onClick={logout}>Logout</button>
     </div>
   );
 };

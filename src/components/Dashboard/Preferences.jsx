@@ -55,11 +55,12 @@ const Preferences = () => {
 
   const ToggleSwitch = ({ enabled, onToggle }) => (
     <button
-      className={`preference-toggle ${enabled ? 'enabled' : 'disabled'}`}
+      className={`preference-toggle ${enabled ? 'enabled' : ''}`}
       onClick={onToggle}
       type="button"
+      aria-pressed={enabled}
     >
-      {enabled ? <FaToggleOn /> : <FaToggleOff />}
+      <span className="sr-only">Toggle</span>
     </button>
   );
 

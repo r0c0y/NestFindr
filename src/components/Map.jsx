@@ -40,7 +40,7 @@ const Map = ({ position, popupText, mapView, activeAmenity, amenities, getAmenit
       center={currentPosition} 
       zoom={15} 
       scrollWheelZoom={false} 
-      style={{ height: '400px', width: '100%', borderRadius: '12px' }}
+      style={{ height: '800px', width: '100%', borderRadius: '12px' }}
       ref={setMap}
     >
       {mapView === 'street' ? (

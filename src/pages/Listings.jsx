@@ -17,6 +17,8 @@ import PropertyDetails from './PropertyDetails';
 import toast from 'react-hot-toast';
 import '../styles/Listings.css';
 
+import Footer from '../components/Footer';
+
 const PROPERTIES_PER_PAGE = 6;
 toast;
 
@@ -360,6 +362,8 @@ const mockProperties = [
           />
         )}
       </Modal>
+
+      <Footer />
     </div>
   );
 };

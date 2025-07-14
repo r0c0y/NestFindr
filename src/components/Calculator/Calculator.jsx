@@ -1,46 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNotification } from '../../context/NotificationContext';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../../config/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import './Calculator.css';
 
-const Calculator = () => {
+const Calculator = ({ initialPrice, initialPropertyTitle, onCalculate, calculateWithSameConditions, compareList, setMortgageResults, selectedPropertyId }) => {
   const [user] = useAuthState(auth);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const [propertyTitle, setPropertyTitle] = useState('');
-  const [homePrice, updateHomePrice] = useState('');
+  const [propertyTitle, setPropertyTitle] = useState(initialPropertyTitle || '');
+  const [homePrice, updateHomePrice] = useState(initialPrice ? initialPrice.toString() : '');
   const [downPayment, updateDownPayment] = useState('');
   const [loanTerm, updateLoanTerm] = useState('30');
   const [interestRate, updateInterestRate] = useState('8.5'); // Default interest rate for India
   const [result, updateResult] = useState(null);
   const [errors, setErrors] = useState({});
   const [reminderStatus, setReminderStatus] = useState(null); // 'success', 'error', or null
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   
-  // Parse URL parameters and set initial values
+  // Set initial values from props
   useEffect(() => {
-    const priceParam = searchParams.get('price');
-    const propertyParam = searchParams.get('property');
-    
-    // Validate and set price
-    if (priceParam) {
-      const numericPrice = parseFloat(priceParam);
+    if (initialPrice) {
+      const numericPrice = parseFloat(initialPrice);
       if (!isNaN(numericPrice) && numericPrice > 0) {
         updateHomePrice(numericPrice.toString());
-        
         // Set default down payment to 20% of property price
         const defaultDownPayment = Math.round(numericPrice * 0.20);
         updateDownPayment(defaultDownPayment.toString());
       }
+    } else {
+      updateHomePrice('');
+      updateDownPayment('');
     }
-    
-    // Set property title if provided
-    if (propertyParam) {
-      setPropertyTitle(decodeURIComponent(propertyParam));
+    if (initialPropertyTitle) {
+      setPropertyTitle(initialPropertyTitle);
+    } else {
+      setPropertyTitle('');
     }
-  }, [searchParams]);
+  }, [initialPrice, initialPropertyTitle]);
 
   const validateInputs = () => {
     const newErrors = {};
@@ -74,20 +69,15 @@ const Calculator = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const calculateMortgage = () => {
-    if (!validateInputs()) {
-      return;
-    }
+  const calculateMortgage = useCallback((price, payment, termYears, rate) => {
+    const numPrice = Number(price);
+    const numPayment = Number(payment);
+    const numTermYears = Number(termYears);
+    const numRate = Number(rate);
 
-    // Convert all to numbers
-    const price = Number(homePrice);
-    const payment = Number(downPayment);
-    const termYears = Number(loanTerm);
-    const rate = Number(interestRate);
-    
-    const term = termYears * 12;
-    const monthlyRate = rate / 100 / 12;
-    const loanAmount = price - payment;
+    const term = numTermYears * 12;
+    const monthlyRate = numRate / 100 / 12;
+    const loanAmount = numPrice - numPayment;
 
     let monthlyPayment = 0;
     if (monthlyRate === 0) {
@@ -98,18 +88,58 @@ const Calculator = () => {
         ((1 + monthlyRate) ** term - 1);
     }
 
-    updateResult({
-      monthlyPayment: monthlyPayment.toFixed(2),
-      totalPayment: (monthlyPayment * term).toFixed(2),
-      totalInterest: ((monthlyPayment * term) - loanAmount).toFixed(2),
-      loanAmount: loanAmount.toFixed(2)
-    });
-  };
+    return {
+      monthlyPayment: parseFloat(monthlyPayment.toFixed(2)),
+      totalPayment: parseFloat((monthlyPayment * term).toFixed(2)),
+      totalInterest: parseFloat(((monthlyPayment * term) - loanAmount).toFixed(2)),
+      loanAmount: parseFloat(loanAmount.toFixed(2))
+    };
+  }, []);
 
-  const handleSubmit = (e) => {
+  const recalculateAllMortgages = useCallback(() => {
+    if (compareList && setMortgageResults) {
+      const newMortgageResults = {};
+      compareList.forEach(prop => {
+        const propPrice = Number(prop.price);
+        const propPayment = Math.round(propPrice * 0.20); // Default 20% down payment for comparison
+        const calculatedResult = calculateMortgage(propPrice, propPayment, Number(loanTerm), Number(interestRate));
+        newMortgageResults[prop.id] = calculatedResult.monthlyPayment;
+      });
+      setMortgageResults(newMortgageResults);
+    }
+  }, [compareList, setMortgageResults, calculateMortgage, loanTerm, interestRate]);
+
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    calculateMortgage();
-  };
+    if (!validateInputs()) {
+      return;
+    }
+
+    const price = Number(homePrice);
+    const payment = Number(downPayment);
+    const termYears = Number(loanTerm);
+    const rate = Number(interestRate);
+
+    if (calculateWithSameConditions) {
+      recalculateAllMortgages();
+      // When calculating for all, we don't update the single result in the modal
+      // as the parent (PropertyComparison) is responsible for displaying all results.
+    } else {
+      const calculatedResult = calculateMortgage(price, payment, termYears, rate);
+      updateResult(calculatedResult);
+      if (onCalculate) {
+        onCalculate(selectedPropertyId, calculatedResult.monthlyPayment);
+      }
+    }
+  }, [homePrice, downPayment, loanTerm, interestRate, calculateWithSameConditions, onCalculate, selectedPropertyId, validateInputs, calculateMortgage, recalculateAllMortgages]);
+
+  useEffect(() => {
+    if (calculateWithSameConditions) {
+      recalculateAllMortgages();
+    }
+  }, [calculateWithSameConditions, recalculateAllMortgages]);
+
+  
 
   const formatCurrency = (value) => {
     if (!value) return '';
@@ -124,9 +154,8 @@ const Calculator = () => {
   const addReminderToDashboard = async () => {
     if (!user) {
       // Show login prompt if user is not authenticated
-      setShowLoginPrompt(true);
-      // Hide prompt after 3 seconds
-      setTimeout(() => setShowLoginPrompt(false), 3000);
+      // This logic should ideally be handled by the parent component or a global auth context
+      // For now, we'll just return and not save the reminder
       return;
     }
     
@@ -180,21 +209,8 @@ const Calculator = () => {
     }
   };
   
-  // Navigate to login page
-  const handleLoginClick = () => {
-    navigate('/login');
-  };
-
   return (
     <div className="calculator-container">
-      {showLoginPrompt && (
-        <div className="login-prompt">
-          <p>Please log in to save reminders</p>
-          <button className="login-prompt-button" onClick={handleLoginClick}>
-            Log in
-          </button>
-        </div>
-      )}
       
       <h1 className="calculator-title">Mortgage Calculator</h1>
       {propertyTitle && (
@@ -309,4 +325,5 @@ const Calculator = () => {
 };
 
 export default Calculator;
+
 

@@ -1,11 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  FiHome, 
-  FiTrendingUp, 
-  FiUsers, 
-  FiAward, 
-  FiShield, 
+  FiArrowRight,
+  FiCheckCircle,
+  FiAward,
+  FiUsers,
+  FiTrendingUp,
+  FiShield,
   FiHeart,
   FiTarget,
   FiEye,
@@ -15,28 +17,35 @@ import {
   FiMapPin
 } from 'react-icons/fi';
 import '../styles/About.css';
+import aboutHeroImage from '../assets/ChatGPT Image Jul 12, 2025, 07_44_39 PM.png';
+import Timeline from '../components/About/Timeline';
+
+import Footer from '../components/Footer';
 
 const About = () => {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+  const navigate = useNavigate();
+
+  const handleBrowseClick = () => {
+    navigate('/listings');
   };
 
-  const staggerChildren = {
+  const handleContactClick = () => {
+    navigate('/contact');
+  };
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 40 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8, ease: 'easeInOut' },
+  };
+
+  const stagger = {
     animate: {
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.2,
+      },
+    },
   };
-
-  const stats = [
-    { icon: FiHome, value: '10,000+', label: 'Properties Listed' },
-    { icon: FiUsers, value: '50,000+', label: 'Happy Customers' },
-    { icon: FiTrendingUp, value: '98%', label: 'Success Rate' },
-    { icon: FiAward, value: '15+', label: 'Years Experience' }
-  ];
 
   const values = [
     {
@@ -84,61 +93,43 @@ const About = () => {
       name: 'Sarah Johnson',
       role: 'CEO & Founder',
       description: 'Real estate industry veteran with 20+ years of experience.',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80'
+      image: 'https://i.pravatar.cc/150?img=1'
     },
     {
       name: 'Michael Chen',
       role: 'CTO',
       description: 'Technology leader passionate about innovation in real estate.',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
+      image: 'https://i.pravatar.cc/150?img=2'
     },
     {
       name: 'Emily Rodriguez',
       role: 'Head of Sales',
       description: 'Customer experience expert dedicated to client satisfaction.',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
+      image: 'https://i.pravatar.cc/150?img=3'
     }
   ];
 
   return (
     <div className="about-container">
       {/* Hero Section */}
-      <motion.section 
-        className="about-hero"
-        initial="initial"
-        animate="animate"
-        variants={staggerChildren}
-      >
-        <motion.div className="hero-content" variants={fadeInUp}>
-          <h1>About NestFindr</h1>
-          <p>Your trusted partner in finding the perfect property</p>
-        </motion.div>
-        <motion.div className="hero-image" variants={fadeInUp}>
-          <img 
-            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1173&q=80" 
-            alt="Modern real estate office" 
-          />
+      <motion.section className="about-hero-section" initial="initial" animate="animate" variants={stagger}>
+        <div className="hero-content-container">
+          <motion.h1 className="hero-title" variants={fadeInUp}>
+            Revolutionizing Real Estate
+          </motion.h1>
+          <motion.p className="hero-subtitle" variants={fadeInUp}>
+            NestFindr is a team of passionate innovators dedicated to making your property journey seamless and enjoyable.
+          </motion.p>
+          <motion.button className="hero-cta-button" variants={fadeInUp} onClick={handleBrowseClick}>
+            Explore Properties <FiArrowRight />
+          </motion.button>
+        </div>
+        <motion.div className="hero-image-container" variants={fadeInUp}>
+          <img src={aboutHeroImage} alt="Modern architecture" />
         </motion.div>
       </motion.section>
 
-      {/* Stats Section */}
-      <motion.section 
-        className="stats-section"
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerChildren}
-      >
-        <div className="stats-grid">
-          {stats.map((stat, index) => (
-            <motion.div key={index} className="stat-card" variants={fadeInUp}>
-              <stat.icon className="stat-icon" />
-              <h3>{stat.value}</h3>
-              <p>{stat.label}</p>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
+      <Timeline />
 
       {/* Values Section */}
       <motion.section 
@@ -146,7 +137,7 @@ const About = () => {
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        variants={staggerChildren}
+        variants={stagger}
       >
         <motion.h2 variants={fadeInUp}>Our Story</motion.h2>
         <motion.p className="story-text" variants={fadeInUp}>
@@ -173,7 +164,7 @@ const About = () => {
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        variants={staggerChildren}
+        variants={stagger}
       >
         <motion.h2 variants={fadeInUp}>Why Choose NestFindr?</motion.h2>
         <div className="features-grid">
@@ -188,12 +179,9 @@ const About = () => {
       </motion.section>
 
       {/* Team Section */}
-      <motion.section 
-        className="team-section"
-        initial="initial"
-        whileInView="animate"
+      <motion.section className="team-section" initial="initial" whileInView="animate"
         viewport={{ once: true }}
-        variants={staggerChildren}
+        variants={stagger}
       >
         <motion.h2 variants={fadeInUp}>Meet Our Team</motion.h2>
         <div className="team-grid">
@@ -218,7 +206,7 @@ const About = () => {
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
-        variants={staggerChildren}
+        variants={stagger}
       >
         <motion.h2 variants={fadeInUp}>Get In Touch</motion.h2>
         <motion.p variants={fadeInUp}>
@@ -228,7 +216,7 @@ const About = () => {
           <motion.div className="contact-card" variants={fadeInUp}>
             <FiPhone className="contact-icon" />
             <h3>Call Us</h3>
-            <p>+1 (555) 123-4567</p>
+            <p>(+91) 1234567890</p>
           </motion.div>
           <motion.div className="contact-card" variants={fadeInUp}>
             <FiMail className="contact-icon" />
@@ -254,10 +242,12 @@ const About = () => {
         <h2>Ready to Get Started?</h2>
         <p>Join thousands of satisfied customers who found their perfect property with NestFindr.</p>
         <div className="cta-buttons">
-          <button className="btn-primary">Browse Properties</button>
-          <button className="btn-secondary">Contact Sales</button>
+          <button className='btn-primary-about' onClick={handleBrowseClick}>Browse Properties</button>
+          <button className='btn-secondary-about' onClick={handleContactClick}>Contact Sales</button>
         </div>
       </motion.section>
+
+      <Footer />
     </div>
   );
 };

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { auth } from '../config/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { FaGoogle, FaGithub } from 'react-icons/fa';
 import '../styles/Auth.css';
 
 const Login = () => {
@@ -10,6 +12,7 @@ const Login = () => {
   const [submitting, setSubmitting] = useState(false);
   const [showVerify, setShowVerify] = useState(false);
   const navigate = useNavigate();
+  const { login, signInWithGoogle, signInWithGithub } = useAuth();
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -19,8 +22,8 @@ const Login = () => {
     setSubmitting(true);
     setShowVerify(false);
     try {
-      const userCred = await signInWithEmailAndPassword(auth, form.email, form.password);
-      if (!userCred.user.emailVerified) {
+      const user = await login(form.email, form.password);
+      if (!user.emailVerified) {
         setShowVerify(true);
         setSubmitting(false);
         return;
@@ -31,6 +34,28 @@ const Login = () => {
       console.error("Login error:", err);
     }
     setSubmitting(false);
+  };
+
+  const handleGoogleLogin = async () => {
+    setError('');
+    try {
+      await signInWithGoogle();
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+      console.error("Google login error:", err);
+    }
+  };
+
+  const handleGithubLogin = async () => {
+    setError('');
+    try {
+      await signInWithGithub();
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+      console.error("GitHub login error:", err);
+    }
   };
 
   return (
@@ -65,6 +90,14 @@ const Login = () => {
           </div>
         )}
       </form>
+      <div className="auth-social-login">
+        <button onClick={handleGoogleLogin} className="social-btn google-btn">
+          <FaGoogle /> Sign in with Google
+        </button>
+        <button onClick={handleGithubLogin} className="social-btn github-btn">
+          <FaGithub /> Sign in with GitHub
+        </button>
+      </div>
       <div className="auth-link">
         Don't have an account? <a href="/signup">Sign up</a>
       </div>

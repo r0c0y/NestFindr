@@ -273,6 +273,7 @@ h2 {
 .amenity-filters {
   margin-bottom: 25px;
   text-align: center;
+
 }
 
 .amenity-filter-select {
@@ -293,9 +294,12 @@ h2 {
 }
 
 .map-container {
+  height: 600px; /* Added fixed height */
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-style: groove;
+  position:sticky;
 }
 
 /* Nearby Amenities List */
@@ -417,11 +421,12 @@ h2 {
 
 /* Agent Contact Card */
 .agent-contact-card {
+  width: fit-content;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 25px 10px ;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #2c3dfc 0%, #0080ff 100%);
   border-radius: 15px;
   margin: 40px 0;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
@@ -440,12 +445,12 @@ h2 {
   border-radius: 50%;
   object-fit: cover;
   margin-top: 8px;
-  border: 3px solid #ff7300;
+  border: 2.5px solid #7bff00;
 }
 
 .agent-details h3 {
   margin: 0;
-  color: #2c3e50;
+  color: #ffffff;
   font-size: 1.3rem;
   display: flex;
   align-items: center;
@@ -454,7 +459,7 @@ h2 {
 
 .agent-details p {
   margin: 0px 0 0;
-  color: #6c757d;
+  color: #c7c7c7;
   font-size: 1rem;
 }
 
@@ -464,6 +469,7 @@ h2 {
   margin-top: 35px;
   margin-left: 20px;
   font-size: 14px;
+  offset-rotate: 222;
 }
 
 /* Neighborhood Insights */
